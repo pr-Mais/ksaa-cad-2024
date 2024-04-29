@@ -1,0 +1,431 @@
+\documentclass[15pt]{article}
+\linespread{1} 
+\setlength{\parindent}{0pt}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage{multicol}
+\usepackage{geometry}
+\usepackage{times}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{rotating}
+\usepackage{tabularx}
+\usepackage{arabtex}
+\usepackage{utf8}
+\usepackage{float}
+
+\usepackage[justification=raggedright,
+            singlelinecheck=false,
+            format=plain,
+            labelfont={bf,it},
+            textfont=it]{caption}
+\usepackage[
+    backend=biber,
+    style=ieee,
+    ]{biblatex} % Bibliography management
+    
+\addbibresource{export.bib}
+\setcode{utf8}
+\title{College of Computer and Information Sciences}
+\author{Mais Alharaki}
+
+% Turn on the style
+\pagestyle{fancy}
+% Clear the header and footer
+\fancyfoot{}
+% Set the right side of the footer to be the page number
+\fancyhf{}
+\fancyhead[R]{Page \thepage\hspace{1pt} of~\pageref{lastpage}}
+\pagestyle{fancy}
+
+% Adjust section title spacing
+\titlespacing*{\section}{0pt}{0.2\baselineskip}{0.3\baselineskip}
+\titlespacing*{\subsection}{0pt}{0\baselineskip}{0\baselineskip}
+\titlespacing*{\subsubsection}{0pt}{0.1\baselineskip}{0.1\baselineskip}
+
+\geometry{a4paper, margin=1in}
+\setlength{\parskip}{\baselineskip}%
+
+\begin{document}
+
+\begin{titlepage}
+    
+    \begin{figure*}[ht!]
+        \centering
+        \includegraphics[height=2cm]{2023.jpg}
+        \hspace{4cm}
+        \includegraphics[height=2cm]{pnu.jpg}
+    \end{figure*}
+    \vspace{.5cm}
+    \centering
+    {\textcolor{gray}{College of Computer and Information Sciences} \par}
+
+    \vfill
+
+    \centering
+    {\LARGE\bfseries Research Project Report\par}
+    \vspace{.5cm}
+    {\large Master of Science in Computing (Data Science)\par}
+    \vfill
+    \begin{singlespace}
+    \setstretch{1.2}
+    \LARGE
+    A Deep Learning Approach to Arabic Reverse Dictionary
+    \end{singlespace}
+    \vspace{2cm}
+
+    \vfill
+    
+    \begin{center}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{ l  l }
+        % Remove the \hline command
+        \textbf{Student Name} & {Mais Alharaki} \\
+        \textbf{Student ID} & 444010562 \\ 
+        \textbf{Submission Date} & 2 May 2024 \\ 
+    \end{tabular}
+    \end{center}
+
+    \vfill
+    
+    Second Semester 2023--2024
+\end{titlepage}
+
+\begin{spacing}{-2}
+\tableofcontents 
+\end{spacing}
+
+\newpage
+
+\section*{Declaration}
+\newpage
+
+\section*{List of figures}
+\newpage
+
+\section*{List of tables}
+\newpage
+
+\section*{List of abbreviations}
+\begin{enumerate}
+    \item[] RD: Reversed Dictionary
+    \item[] NLP: Natural Language Processing
+    \item[] BERT: Bidirectional Encoder Representations from Transformers
+    \item[] Seq2Seq: Sequence to Sequence
+\end{enumerate}
+\newpage
+
+\section*{Abstract}
+
+
+\newpage
+
+\section{Introduction}
+
+\section{Background material}
+% Describe the field and present literature review
+
+This chapter lays the groundwork for understanding the subsequent sections of this dissertation by exploring the fundamentals of natural language processing and deep learning. These disciplines are instrumental to the overall research presented here.
+
+\subsection{Natural Language Processing}
+Language is the way we communicate and exchange information, it’s composed of symbols, rules and repetitive expressions. Natural Language Processing or NLP is a field where AI and linguistics cross together. It's interested in enabling machines to understand and model language, therefore enabling more natural communication between humans and machines.
+
+Natural Language Processing (NLP) encompasses two major subfields: Natural Language Understanding (NLU) and Natural Language Generation (NLG). NLU focuses on enabling computers to comprehend the meaning of words, phrases, and expressions within human language. In contrast, NLG concerns the process of generating meaningful phrases and paragraphs, essentially allowing machines to "write" human-like text \cite{Khurana2023}.
+
+\subsection{Reverse Dictionary and Data Science}
+
+Dictionaries in their conventional form map words to a set of meanings or definitions, often combining them with some examples on how the words are used in context. Dictionaries are the foundation of various NLP tasks, serving as lexical resources, where they help in understanding information such as word meanings, parts of speech, and relationships between words. Tasks such as stemming and lemmatization also rely on dictionaries to return words to their base form.
+
+Reversed dictionaries are a form of dictionaries where a description yields a set of words from the dictionary that best matches the description. Traditionally used as tools for linguistic exploration, reversed dictionaries have evolved to play a significant role in data science. Initially conceived to assist with language retrieval challenges, they now offer innovative solutions in data analysis and processing. A prime use-case in data science is their application in data exploration and analysis, where reverse dictionaries facilitate the identification of relevant features within complex datasets by generating key terms or phrases. This enhances the efficiency of data mining and fosters the discovery of new insights \cite{Chen2022}.
+
+In machine learning, reverse dictionaries aid in feature engineering, enriching model inputs with nuanced context. This utility extends to automated metadata generation for effective data cataloging and management. Additionally, they enhance content curation and recommendation systems, offering more precise content descriptors and improving recommendation relevance.
+
+Furthermore, reverse dictionaries streamline text summarization and topic modeling Griffiths2004, assisting in distilling essential information from large text volumes. They also play a crucial role in improving chatbot and customer service automation by accurately interpreting user queries and intents.
+
+\subsection{Deep Learning}
+
+Deep learning is a subfield of machine learning inspired by the structure and function of the human brain. It utilizes artificial neural networks (ANNs) with multiple hidden layers, enabling the extraction of complex patterns from large amounts of data. This capability has revolutionized various fields, including computer vision, natural language processing (NLP), and speech recognition.
+
+Though the idea can be traced back many years, deep learning only recently has proved to outperform traditional ML algorithms in many tasks, including NLP.
+
+However, training deep learning models from scratch often requires significant computational resources and large amounts of labeled data. This can be a barrier for tasks with limited data availability. Here's where transfer learning comes in as a powerful technique.
+
+Transfer learning is an approach that leverages knowledge gained from a pre-trained deep learning model on a source task and applies it to a new, related target task. By transferring the learned weights and features from the pre-trained model, the target model can achieve good performance even with limited training data. This is particularly beneficial for NLP tasks, where obtaining large amounts of labeled data can be expensive and time-consuming.
+
+\subsubsection{Sequence to Sequence approach for language modeling}
+
+The sequence to sequence (Seq2Seq) approach is a powerful deep learning architecture specifically designed for tasks that involve processing and generating sequences. In NLP, this translates to tasks like machine translation, where an input sequence in one language is transformed into an output sequence in another language. Seq2Seq models typically consist of two recurrent neural networks (RNNs) or transformers:
+\begin{enumerate}
+    \item[-] Encoder RNN/Transformer: This network processes the input sequence and encodes it into a fixed-length vector representation capturing the semantic meaning.
+    \item[-] Decoder RNN/Transformer: This network utilizes the encoded representation from the encoder and generates the output sequence one element at a time, conditioned on the previously generated elements.
+\end{enumerate}
+
+Recent advancements in Seq2Seq models include attention mechanisms, which allow the decoder to selectively focus on relevant parts of the encoded input during the generation process.
+
+\subsubsection{Text embeddings and tokenization}
+
+Text embeddings are a crucial component in NLP tasks. They represent words or sub-word units (like characters) as numerical vectors in a high-dimensional space, where words with similar meanings tend to be positioned closer together. Popular techniques for text embedding include Word2Vec and GloVe, which learn these representations by analyzing large text corpora.
+
+Tokenization is the process of breaking down text data into smaller units suitable for processing by deep learning models. These units can be words, characters, or even sub-word units like morphemes. The choice of tokenization strategy can significantly impact the performance of deep learning models in NLP tasks.
+
+\subsubsection{SentencePiece tokenizer}
+
+SentencePiece is an unsupervised text tokenizer, used by the T5 models for text data processing \cite{Kudo2018}. Unlike traditional word-based tokenization, SentencePiece utilizes subword units, which are smaller linguistic components like prefixes, suffixes, and morphemes. This approach offers several advantages. Firstly, it allows T5 to effectively handle OOV words by combining subword units to represent them. Secondly, SentencePiece is language-independent, enabling T5 to process text in diverse languages with a single tokenizer.
+
+During tokenization, SentencePiece analyzes the training corpus to identify frequently occurring subword units and builds a vocabulary. When processing text, it segments the input into these subword units and assigns them unique token IDs, which the T5 model uses for its internal operations. This subword-level representation provides T5 with a more granular understanding of the text, enhancing its ability to perform various NLP tasks effectively.
+
+\subsubsection{Transformer Architecture: A Paradigm Shift}
+
+The Transformer architecture, introduced by Vaswani et al. in 2017 in the famous paper “Attention is All You Need” \cite{Vaswani2017}, has become a dominant force in NLP due to its ability to efficiently capture long-range dependencies within sequences. Unlike RNNs, which process sequences sequentially, Transformers rely solely on attention mechanisms. These mechanisms allow each element in the input sequence to attend to (focus on) other elements, enabling the model to understand the context of each word in relation to the entire sequence. This parallel processing approach facilitates faster training compared to RNNs and is particularly effective for tasks requiring long-range dependency modeling, such as machine translation and text summarization
+
+\subsubsection{BERT vs. T5: Pre-trained Transformer Models}
+
+While the core Transformer architecture provides a powerful foundation, further advancements have led to the development of specialized pre-trained models like BERT and T5. These models leverage the strengths of Transformers and are pre-trained on massive amounts of unlabeled text data, allowing them to learn general contextual representations of language.
+
+\begin{enumerate}
+    \item[-] \textbf{BERT (Bidirectional Encoder Representations from Transformers)}: Introduced by Google \cite{devlin2018} in 2018, BERT is a pre-trained Transformer model that excels at understanding the context of words in a sentence and their relationships. It can be fine-tuned for various NLP tasks like question answering and sentiment analysis. However, BERT requires fine-tuning for specific tasks, which can be computationally expensive.
+    \item[-] \textbf{T5 (Text-to-Text Transfer Transformer)}: Introduced also by Google AI in 2019 \cite{Raffel2019}, T5 utilizes a text-to-text format for all NLP tasks. It employs a single encoder-decoder architecture and learns to transform the input sequence into the desired output sequence. This approach makes T5 versatile, allowing it to handle a wide range of tasks by simply changing the format of the input and desired output. T5 often requires less fine-tuning compared to BERT, making it quicker to deploy for various tasks. However, it might not achieve the same level of deep contextual understanding as BERT in tasks where this is crucial.
+\end{enumerate}
+
+\subsection{ArabicNLP 2024 Shared Task}
+
+
+\section{Related work}
+
+Understanding the meaning behind words, even within the same language, presents a significant challenge for machines. Monolingual reversed dictionaries address this directly, aiming to identify a target word based on its definition in the same language. This task is particularly crucial for languages like Arabic, with its rich vocabulary and unique cultural nuances. However, research in this area remains less explored compared to other languages with rich resources.
+
+\subsection{Previous studies}
+
+One notable recent contribution is the work presented by ElBakry et al \cite{Albakry2023}. (2023) as part of the ArabicNLP 2023 Shared Task, where they demonstrate an approach to Arabic reverse dictionary tasks, successfully handling both Arabic and English definition inputs. It utilizes an ensemble of fine-tuned BERT models, specifically CamelBERT-MSA and MARBERTv2, to predict word embeddings from provided definitions. By leveraging an ensemble strategy, the authors achieved improved results compared to single models, highlighting the benefits of this approach.
+
+On the same task another attempt by Qaddoumi \cite{Qaddoumi2023}, a method is introduced to enhance Arabic word embeddings using a modified BERT Multilingual model with data augmentation, targeting improvements in Arabic reverse dictionary tasks. By customizing BERT for Arabic and employing data augmentation strategies, the study achieves significant enhancements in semantic accuracy. However, it suggests further exploration into the effects of data augmentation and the need for expanded datasets.
+
+Building on this, Sibaee et al. \cite{Sibaee2023} presently employs a SemiDecoder architecture combined with an SBERT encoder. This methodology excels in encoding word definitions into vectors using SBERT, followed by training with the SemiDecoder model. The approach leverages SBERT's proficiency in capturing semantic similarity and the SemiDecoder's training efficiency, leading to a high ranking in the shared task.
+
+Other languages received more extensive research in the area of RDs. Mane et al. \cite{Mane2022} proposed a unique approach to reverse dictionaries with mT5, aiming at Indian languages support, where mT5 was employed for its ability to understand and generate language across multiple languages. It contrasts with BERT's Masked Language Modeling, focusing instead on translating and understanding user inputs to produce accurate word predictions.
+
+Ardoiz et al. \cite{Ardoiz2022}, in the SemEval RD task, studied the significance of high-quality lexicographic data in the efficiency of reversed dictionaries models. They suggest that refining the dataset by incorporating high-quality lexicographic data could significantly impact the task's outcomes, emphasizing the need for a robust dataset for optimal model performance. Their methodology involved a sentence-transformer model named “distiluse-base-multilingual-cased-v2”, which was trained to make the definition embeddings as similar as possible as the word gloss.
+On the other hand, Tran et al. 2022 in SemEval RD task, evaluates Transformer-based models enhanced with LST and BiLSTM layers for reverse dictionary across five languages, named English, Italian, Spanish, French and Russian, showcasing partial improvements over the CODWOE (COmparing Dictionaries and WOrd Embeddings) competition's baseline. It explores monolingual, multilingual, and zero-shot cross-lingual settings, providing insights into the viability of cross-lingual methodologies.
+
+Chen et al. 2022 took a different approach on the English language by embedding both the definitions and words into the same shared space using transformer-based architectures to optimize the model across both tasks simultaneously. The model demonstrated superior performance in reverse dictionary tasks, achieving high accuracy and consistency over previous methods. For definition modeling, while showing improvements, the results suggest areas for future enhancement, particularly in generating higher-quality definitions as indicated by human evaluations and BLEU scores.
+
+Covering a specific instance of the English reversed dictionary, Siddique et al. 2022 focused on adjective phrases in Precisiated Natural Language, as mentioned that adjectives count for a large amount of content in natural language, hence highlighting the importance of a better representation for it. The proposed transformer-based model was reported to outperform the Onelook.com and WantWords online reverse dictionaries.
+
+Following similar approaches in literature, Yan et al. 2020 incorporated BERT and mBERT into the RD task for both monolingual and cross-lingual contexts. The authors propose a method that enables effective word prediction from descriptions without needing parallel corpora for cross-lingual tasks. This approach addresses challenges such as data sparsity, polysemy, and the alignment of cross-lingual word embeddings. The methodology involved modifying the input sequence to include masked tokens that BERT or mBERT would predict, converting these predictions into word scores, and using these scores to rank the possible target words.
+
+Zhang et al. 2019 presents a cross-lingual, multi-channel reverse dictionary model, addressing the variability of input queries and targeting both high and low-frequency words, showing state-of-the-art performance across English and Chinese datasets. The model combines a sentence encoder with multiple characteristic predictors (POS, morpheme, word category, sememe) to enhance word retrieval from descriptions. Experiments demonstrate significant improvements over conventional methods and commercial systems, particularly for human-written descriptions, while suggesting the model's adaptability to diverse linguistic features and robustness in handling variable inputs.
+
+Finally, covering monolingual English RD, Pilehvar et al. 2019 and Hedderich et al. 2019 emphasized on the importance of representing multi-sense words using different embeddings. Both methodologies address the limitations of single-sense embeddings by allowing for distinct representations of a word's different meanings, demonstrating substantial improvements in performance on the English language.
+
+\begin{sidewaystable}
+    \centering
+    \caption{Summary of recent research on Reverse Dictionaries}
+    \label{tab:wide-item-tbl}
+    \renewcommand{\arraystretch}{1.5}%
+    \begin{tabularx}{\textwidth}{|c|c|X|X|X|X|}
+        \hline
+        \textbf{Author} & \textbf{Year} &  \textbf{Language} & \textbf{Dataset} & \textbf{Methodology} & \textbf{Results} \\
+        \hline
+        \cite{Albakry2023} & 2023 & Arabic, English & KSAA Shared Task 2023 & Ensemble of fine-tuned BERT models & Improved results with ensemble strategy \\
+        \hline
+        \cite{Qaddoumi2023} & 2023 & Arabic & ArabicNLP 2023 Shared Task & Modified BERT Multilingual model with data augmentation & Enhanced Arabic word embeddings \\
+        \hline
+        \cite{Sibaee2023} & 2023 & Arabic & ArabicNLP 2023 Shared Task & SemiDecoder architecture with SBERT encoder & High ranking in shared task \\
+        \hline
+        \cite{Mane2022} & 2022 & Indian languages & Reverse dictionary & mT5 model for Indian languages support & Focus on translating and understanding user inputs \\
+        \hline
+        \cite{Ardoiz2022} & 2022 & English & SemEval RD task & Sentence-transformer model & Importance of high-quality lexicographic data \\
+        \hline
+        \cite{Tran2022} & 2022 & English, Italian, Spanish, French, Russian & SemEval RD task & Transformer-based models with LST and BiLSTM layers & Partial improvements over baseline \\
+        \hline
+        \cite{Chen2022} & 2022 & English & Reverse dictionary & Transformer-based architectures for joint optimization & Superior performance in reverse dictionary tasks \\
+        \hline
+        \cite{Siddique2022} & 2022 & English & Reverse dictionary & Transformer-based model for adjective phrases & Outperforms online reverse dictionaries \\
+        \hline
+        \cite{Yan2020} & 2020 & English & Reverse dictionary & BERT and mBERT for monolingual and cross-lingual tasks & Effective word prediction from descriptions \\
+        \hline
+        \cite{Zhang2019} & 2019 & English, Chinese & Reverse dictionary & Cross-lingual, multi-channel model with sentence encoder & State-of-the-art performance across English and Chinese datasets \\
+        \hline
+        \cite{Pilehvar2019} & 2019 & English & Reverse dictionary & Multi-sense embeddings for multi-sense words & Improved performance on English RD \\
+        \hline
+        \cite{Hedderich2019} & 2019 & English & Reverse dictionary & Multi-sense embeddings for multi-sense words & Improved performance on English RD \\
+        \hline
+    \end{tabularx}
+\end{sidewaystable}
+
+\subsection{Research gap}
+
+Reading into the topic from literature proposed some questions:
+\begin{enumerate}
+    \item What is the impact of enriching the definitions from dictionary data with examples and expanding the dataset on performance?
+    \item Are there any pre-trained architectures other than BERT that have similar good performance on Arabic?
+\end{enumerate}
+
+Moreover, Arabic RDs are not well discovered and researched for the Arabic language, which is evident by the fact that only few articles have explored it very recently in the literature. Our contribution in this domain will explore and attempt to answer both questions presented earlier.
+
+\section{Methodology and proposed solution}
+
+Most recent studies on reversed dictionaries have utilized pretrained models, as seen in the literature. Moreover, all studies on Arabic reversed dictionaries used BERT and its variations. Consequently, the potential for exploring other architectures and pretrained models remain intact. 
+In this section, we go more in depth into the proposed solution, starting with understanding the dataset and task at hand, the methods used to expand the dataset with relevant context, and finally the model architecture and evaluation results.
+
+Briefly:
+\begin{enumerate}
+    \item The Shared Task dataset contains 39k instances with its splits ready for experimentation.
+    \item The first part of the pipeline concerns generating contextually close examples for each word:gloss pairs in the dataset. The goal is to enrich the context of each word's meaning in the dictionary.
+    \item The inputs are then tokenized and encoded using SentencePiece tokenizer to prepare for training.
+    \item A T5 model is trained to predict the word embeddings. The architecture leverages sequence to sequence language modeling, an architecture that hasn’t been explored for Arabic RD in the literature.
+    \item Finally, results are evaluated using Mean Squared Error and Cosine similarity, and compared with the baseline.
+\end{enumerate}
+
+\subsection{Data description}
+
+\begin{table}[H]
+    \centering
+    \caption{Dataset splits}
+    \label{table:dataset-splits}
+    \renewcommand{\arraystretch}{1.5}%
+    \begin{tabularx}{\textwidth}{|X|X|X|}
+        \hline
+        \textbf{Train} & \textbf{Validation} & \textbf{Test} \\
+        \hline
+        31,372 & 3,921 & 3,921 \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+The dataset used is an Arabic dictionary containing 39,214 entries, splitted into train, validation and test sets, as seen in Table \ref{table:dataset-splits}, with 6 features named: word, gloss, pos, electra, bertseg, bertmsa, described in Table \ref{table:dataset-desc}. The dataset was provided to the participants in the Shared Task and is not publicly available.
+
+\begin{table}[H]
+    \centering
+    \caption{Dataset description}
+    \label{table:dataset-desc}
+    \renewcommand{\arraystretch}{1.5}%
+    \begin{tabularx}{\textwidth}{|l|X|}
+        \hline
+        \textbf{Feature} & \textbf{Value} \\
+        \hline
+        word & \<عين> \\
+        \hline
+        gloss & \<عضو الإبصار في الكائن الحي> \\
+        \hline
+        pos & n \\
+        \hline
+        electra & [0.4, 0.3, …] \\
+        \hline
+        bertseg & [0.7, 2.9, …] \\
+        \hline
+        bertmsa & [0.8, 1.4, …] \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+\begin{enumerate}
+    \item A \textbf{word} is an entry in the dictionary, or a lemma.
+    \item A \textbf{gloss} is the definition or meaning for this word based on its part of speech.
+    \item A \textbf{pos} stands for Part-of-Speech, which is a grammatical tag assigned to words in NLP, and might include one of the following: noun, verb, adjective.
+    \item The last 3 features represent the embeddings, each embedding corresponds to the representation of the word in a high dimensional space using a set of pretrained models, employing AraELECTRA (Antoun et al., 2021), AraBERTv2 (Antoun et al., 2020), and camelBERT-MSA (Inoue et al., 2021), respectively referred to as electra, bertseg, and bertmsa.
+    \item In the previous table, the word \<عين> is a noun which means “The organ of vision in a living organism”, its part-of-speech is “Noun”, and is represented with 3 different word embeddings.
+\end{enumerate}
+
+\subsection{Data expansion}
+
+As noticed while performing data exploration, the glosses are usually short and formal descriptions written by expert linguists. In Table \ref{table:word-gloss}, we notice that some glosses are short and concise, making its usage unclear, and results in a vague understanding of the word.
+
+\begin{table}[H]
+    \centering
+    \caption{Words with short glosses}
+    \label{table:word-gloss}
+    \renewcommand{\arraystretch}{1.5}%
+    \begin{tabularx}{\textwidth}{|X|X|}
+        \hline
+        \textbf{Word} & \textbf{Gloss} \\
+        \hline
+        \<رقع> & \<ضربه بها> \\
+        \hline
+        \<قعد> & \<حبسه عنه> \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+Average users are unlikely to provide such precise descriptions, on the contrary, user queries might lack any key words that could identify the target word or set of words. Therefore, and inspired by our ability to perceive and understand new vocabulary from context \cite{killian1995}, we propose that in order to enhance the model’s ability to learn words from user queries, the model should be trained on usage examples that put the words into context.
+
+The manual curation of contextually relevant examples is a laborious and resource-demanding task, which, given the short time frame of this experiment, is not a feasible solution, hence the need to find an automatic way to curate examples from publicly available Arabic datasets. 
+
+The dataset of choice is the Arabic wikipedia embeddings from the Embedding Archives project by CohereAI, which contains 3.1 million entries from Wikipedia, each entry containing a text, and the embedding of that text (or embedding), alongside other metadata. Text embeddings in the dataset are achieved through CohereAI's multilingual-22-12 semantic embeddings model, trained for multilingual comprehension encompassing 101 languages including Arabic. This closed-source model is accessible via Cohere's API \cite{Kamalloo2023}.
+
+To curate a number of examples for each word, we use a semantic similarity approach by embedding the word and gloss using multilingual-22-12 model, and running a vector search using cosine similarity, to look for the top 5 closest entries from Wikipedia to the given dictionary gloss. As observed in Table (no.), the example may not directly contain the dictionary entry, but the surrounding context establishes a clear semantic relationship with the word's meaning.
+
+\begin{table}[H]
+    \centering
+    \caption{Words with short glosses}
+    \label{table:word-gloss}
+    \renewcommand{\arraystretch}{1.5}%
+    \begin{tabularx}{\textwidth}{|>{\centering}c|>{\centering\arraybackslash}X|X|}
+        \hline
+        \textbf{Word} & \textbf{Gloss} & \textbf{Examples from Wikipedia} \\
+        \hline
+        \RL{كذاب} & \RL{صيغة مبالغة من كذَبَ كذَبَ على: كثير الكذب} & \multicolumn{1}{>{\centering}X|}{\RL{وردت لفظ الكذب ومشتقاتها في القرآن الكريم في مواضع متعددة وبصيغ متعددة.، ووردت بعدد (251) موضعًا، على (6) أوجه}\newline\RL{وهو أسوء أنواع الجهل، وهو الاِعْتِقَادُ الجَازِمُ بِمَا لاَ يَتَّفِقُ مَعَ الحَقِيقَةِ، إِذْ يَعْتَقِدُ الْمَرْءُ عَاِرفاً عِلْماً وَهُوَ عَكْسُ ذَلِكَ. وهو تعبيرٌ أُطلِقَ على من لا يسلِّم بجهله، ويدَّعى ما لا يعلم}} \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+\subsection{Modeling}
+
+This section details the modeling approach employed to construct an Arabic RD retrieval system. The primary objective is to surpass the performance of the 2024 RD Shared Task baseline on the cosine similarity metric. We plan to achieve this objective through a retrieval framework that leverages word embeddings and cosine similarity measures for efficient retrieval of words based on its glosses. The pretrained mT5 model is used, which is a transformer model built on sequence to sequence language modeling approach.
+
+\subsubsection{Data preprocessing}
+
+For machines to understand textual data, it must be preprocessed to represent it numerically. Fortunately, the dataset at hand is mostly clean and ready to be used, requiring only the tokenization step before training.
+
+Data preprocessing can be summarized into two main steps:
+
+\begin{enumerate}
+    \item \textbf{Text Augmentation:} The dataset is augmented by merging the gloss and its corresponding top two examples into a single text string that serves as the input for the model. This step enriches the training data and provides the model with additional context.
+    \item \textbf{Tokenization:} The augmented text is tokenized using the mT5 tokenizer. This tokenizer leverages SentencePiece, a subword-level tokenization algorithm trained on the original corpora used to train the mT5 model.
+\end{enumerate}
+
+The following diagram visualizes the tokenization process for a sample sentence from the dataset.
+
+% TODO add the diagram
+
+\subsubsection{Model architecture}
+
+The proposed model architecture leverages a pre-trained mT5 model as its foundation, particularly the encoder part of the model. The last hidden layer of the mT5 encoder contains the embedding information needed to represent the input sentence in the target words’ space. 
+
+To adapt the last hidden state of the encoder to output an embedding of a specific shape, a pooling layer will first transform the hidden state matrix to a vector of a fixed length of 718 (the mT5 encoder output shape). This layer can be represented by the following equation. This equation calculates a weighted sum of the last hidden states \(O\) where the weights are determined by the attention mask \(A\), normalized by the total weight (or count of non-zero entries in \(A\) for each sequence).
+
+\begin{equation}
+    pool = \frac{\sum_{j,k} (O_{ijk} \cdot A_{ijk})}{\sum_j A_{ij}}
+\end{equation}
+
+The final layer is a linear layer that takes the output from the pooling layer, and transforms it into the desired target shape. The dataset includes three target embedding sizes: 256 for electra, 768 for bertseg, and 768 for bertmsa. To accommodate these distinct shapes, the final layer of the model is adapted with two variations based on the target size, resulting in three different models.
+
+The task at hand is not a direct sequence to sequence problem, rather an information retrieval task. Therefore, the model's objective is to predict target word embeddings instead of the words themselves.
+
+Finally, the pre-trained models employed for the encoder part are mT5 Base and AraT5 V2, both of which are variations of the T5 model. AraT5 V2 is a fine-tuned version of the mT5 base model on diverse Arabic data, making it more specialized for Arabic and suitable for our task \cite{Nagoudi2021}.
+
+\section{Data analysis and results}
+
+\subsection{Environment setup}
+
+This subsection outlines the software environment and hardware specifications utilized for example generation, model development and experimentation. Generally, the technical stack leverages Python for development, and Google Colab for development.
+
+
+\newpage
+
+\printbibheading[title={References},heading=bibnumbered]\label{lastpage}
+\printbibliography[heading=subbibliography]
+
+% \section{Appendix}
+
+\end{document}
+
+
+
