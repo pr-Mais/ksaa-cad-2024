@@ -7,7 +7,7 @@
 \usepackage{multicol}
 \usepackage{geometry}
 \usepackage{times}
-\usepackage{graphicx} % Required for inserting images
+\usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{fancyhdr}
@@ -20,6 +20,7 @@
 \usepackage{arabtex}
 \usepackage{utf8}
 \usepackage{float}
+\usepackage[bottom]{footmisc}
 \usepackage[justification=raggedright,
             singlelinecheck=false,
             format=plain,
@@ -28,7 +29,8 @@
 \usepackage[
     backend=biber,
     style=ieee,
-    ]{biblatex} % Bibliography management
+    sorting=ynt
+    ]{biblatex}
     
 \addbibresource{export.bib}
 \setcode{utf8}
@@ -148,6 +150,8 @@ Date: \underline{2 May 2024}
 \begin{enumerate}
     \item[] RD: Reversed Dictionary
     \item[] NLP: Natural Language Processing
+    \item[] NLG: Natural Language Generation
+    \item[] NLU: Natural Language Understanding
     \item[] BERT: Bidirectional Encoder Representations from Transformers
     \item[] Seq2Seq: Sequence to Sequence
 \end{enumerate}
@@ -155,21 +159,63 @@ Date: \underline{2 May 2024}
 
 \section*{Abstract}
 
+The domain of reverse dictionaries, while advancing in languages like English and Chinese, remains significantly underdeveloped for less resourced languages, such as Arabic. This study attempts to explore a data-driven approach to enhance word retrieval processes in Arabic reverse dictionaries. The research focuses on the ArabicNLP 2024 Shared Task, which provides a dataset of 39,214 word-gloss pairs, each with a corresponding target word embedding. The proposed solution aims to surpass the baseline performance by employing state-of-the-art deep learning models and innovative data augmentation techniques. The methodology involves enriching the dataset with contextually relevant examples, training a T5 model for word embedding prediction, and evaluating the results using Mean Squared Error and Cosine similarity. The study aims to contribute to the advancement of Arabic reverse dictionaries.
 
 \newpage
 
 \section{Introduction}
 
-% Introduce the topic and the problem statement
+While reversed dictionaries have witnessed advancements in languages like English and Chinese (e.g., WantWords \cite{Qi2020}), their development for Arabic remains significantly underdeveloped. This gap is particularly concerning for a language with a rich linguistic heritage and widespread use. Despite this, robust and technologically advanced tools for reverse lexical searches in Arabic are scarce, with the only ongoing effort being the 1st Arabic Reverse Dictionary shared task launched in 2023 by the King Salman Global Academy for Arabic Language \footnote{\url{https://arai.ksaa.gov.sa/sharedTask/}}.
 
-The ambition of this research is to pioneer a reverse dictionary model. Dictionaries, in their conventional role, offer meanings for known words. However, the reverse dictionary model proposed here assists when only the description of a word is known, not the word itself. This model is particularly crucial for situations where the user can articulate a word's concept or function in one language but needs its equivalent in another \cite{Siddique2019}, which is studied as a cognitive phenomenon known as tip-of-the-tongue \cite{Brown1966}.
 
-This project aims to enhance word retrieval processes by leveraging data-driven techniques to establish a more intuitive and accurate connection between conceptual descriptions and corresponding terms. This approach is especially designed to enhance the language learning experience, employing sophisticated data analytics to map natural cross-lingual inputs to lexical outputs. The focus on Arabic, a less explored language in this subject, presents a unique opportunity to contribute significantly to the field of data science by extending its applications to new linguistic territories.
+\subsection{Content of study}
 
-The domain of reverse dictionaries, while advancing in languages like English and Chinese, as exemplified by systems like WantWords \cite{Qi2020}, remains significantly underdeveloped for the Arabic language. Existing reverse dictionary systems predominantly cater to monolingual users and often do not support cross-linguistic queries, a critical feature for a globalized world. This gap is particularly pronounced in the context of the Arabic language, which, despite its rich linguistic heritage and widespread use, lacks robust, technologically advanced tools for reverse lexical searches, where the only ongoing effort in this domain is demonstrated by the 1st Arabic Reverse Dictionary shared task \footnote{This task was launched in 2023 by King Salman Global Academy for Arabic Language and can be found here: \href{https://arai.ksaa.gov.sa/sharedTask/}{arai.ksaa.gov.sa/sharedTask}}.
+This research aims to address the limitations of existing Arabic reverse dictionary models by proposing a data-driven approach that leverages deep learning techniques to enhance word retrieval processes. We focus on the ArabicNLP 2024 Shared Task dataset, which provides a rich collection of approximately 39k word-gloss pairs extracted from various Arabic dictionaries, each associated with a corresponding target word embedding. The proposed solution employs state-of-the-art deep learning models and innovative data augmentation techniques to improve performance.
 
-This research is building upon the new ArabicNLP 2024 Shared Task, which provides a dataset of 39,214 word-gloss pairs, each with a corresponding word embedding. The aim is to surpass the baseline performance by employing new state-of-the-art deep learning models and innovative data augmentation techniques.
+\subsection{Problem Statement \& Motivation}
 
+The Arabic language, with its intricate morphology and diverse dialects, presents unique challenges for Natural Language Processing (NLP) tasks. Reverse dictionaries are crucial tools for language learners, translators, and researchers, enabling them to identify words based on their meanings or descriptions.
+
+However, existing Arabic reverse dictionary models are often limited in scope and functionality, frequently relying on traditional dictionary structures that fail to capture the nuances and complexities of the language. This research is motivated by the desire to enrich this field by exploring new methodologies that can significantly enhance the performance of Arabic reverse dictionaries.
+
+
+\subsection{Aim and objectives}
+
+This project aims to enhance word retrieval processes in Arabic by leveraging data-driven techniques to establish a more intuitive and accurate connection between conceptual descriptions and corresponding terms. This approach is specifically designed to improve the language learning experience by utilizing sophisticated data analytics to map natural language inputs to lexical outputs. Focusing on Arabic, a less explored language in this domain, presents a unique opportunity to contribute significantly to the field of data science by extending its applications to new linguistic territories.
+
+\subsection{Proposed solution}
+
+This research leverages the new ArabicNLP 2024 Shared Task dataset, comprising 39,214 word-gloss pairs with corresponding target word embeddings. Our goal is to surpass the baseline performance by employing cutting-edge deep learning models and innovative data augmentation techniques. Figure \ref{fig:rd-flow} illustrates the proposed solution's workflow.
+
+\begin{figure}
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=\textwidth]{rd-flow.png}
+    \caption{The workflow of a reverse dictionary}
+    \label{fig:rd-flow}
+\end{figure}
+
+The proposed solution is twofold:
+
+\begin{enumerate}
+    \item \textbf{Data Enrichment:} The dataset will be enriched with contextually relevant examples to enhance the model's understanding of word meanings. This will be achieved by leveraging a large Arabic text corpus to curate examples for each word-gloss pair.
+    \item \textbf{T5 Model Integration:} A T5 model will be trained to predict word embeddings from the enriched dataset.
+\end{enumerate}
+
+\newpage
+
+\subsection{Structure of the report}
+
+The upcoming sections are structured as follows:
+
+\begin{enumerate}
+    \item Section 2 provides background material on natural language processing, deep learning, and reverse dictionaries.
+    \item Section 3 reviews related work in the field of reverse dictionaries, highlighting recent advancements and research gaps.
+    \item Section 4 outlines the methodology and proposed solution, detailing the dataset, data expansion techniques, model architecture, and evaluation metrics.
+    \item Section 5 presents the results of the experiments and discusses the findings.
+\end{enumerate}
+
+\newpage
 
 \section{Background material}
 % Describe the field and present literature review
@@ -189,7 +235,7 @@ Reversed dictionaries are a form of dictionaries where a description yields a se
 
 In machine learning, reverse dictionaries aid in feature engineering, enriching model inputs with nuanced context. This utility extends to automated metadata generation for effective data cataloging and management. Additionally, they enhance content curation and recommendation systems, offering more precise content descriptors and improving recommendation relevance.
 
-Furthermore, reverse dictionaries streamline text summarization and topic modeling Griffiths2004, assisting in distilling essential information from large text volumes. They also play a crucial role in improving chatbot and customer service automation by accurately interpreting user queries and intents.
+Furthermore, reverse dictionaries streamline text summarization and topic modeling \cite{Griffiths2004}, assisting in distilling essential information from large text volumes. They also play a crucial role in improving chatbot and customer service automation by accurately interpreting user queries and intents.
 
 \subsection{Deep Learning}
 
@@ -238,8 +284,9 @@ While the core Transformer architecture provides a powerful foundation, further 
 
 \subsection{ArabicNLP 2024 Shared Task}
 
-The ArabicNLP 2024 Shared Task \footnote{The new task has been launched in May this year, more information can be found here: \href{https://arai.ksaa.gov.sa/sharedTask2024/}{arai.ksaa.gov.sa/sharedTask}} is a recent initiative that aims to advance the field of Arabic natural language processing by providing a platform for researchers to collaborate and innovate. The Shared Task focuses on various NLP challenges, including machine translation, named entity recognition, and reverse dictionary tasks. The reverse dictionary task specifically targets the development of models capable of predicting words from their definitions in Arabic. Participants are provided with a dataset containing word-gloss pairs and corresponding word embeddings, challenging them to build models that can accurately predict the target words based on the provided glosses.
+The KSAA-CAD Shared Task\footnote{The new task has been launched in May this year, more information can be found here: \href{https://arai.ksaa.gov.sa/sharedTask2024/}{arai.ksaa.gov.sa/sharedTask}} is a part of the ArabicNLP \footnote{\href{https://arabicnlp2024.sigarab.org/}{arabicnlp2024.sigarab.org}} conference for 2024, and it aims to advance the field of Arabic natural language processing by providing a platform for researchers to collaborate and innovate. This task specifically targets the development of models capable of predicting words from their definitions in Arabic. Participants are provided with a dataset containing word-gloss pairs and corresponding word embeddings, challenging them to build models that can accurately predict the target words based on the provided glosses.
 
+\newpage
 
 \section{Related work}
 
@@ -258,47 +305,47 @@ Other languages received more extensive research in the area of RDs. Mane et al.
 Ardoiz et al. \cite{Ardoiz2022}, in the SemEval RD task, studied the significance of high-quality lexicographic data in the efficiency of reversed dictionaries models. They suggest that refining the dataset by incorporating high-quality lexicographic data could significantly impact the task's outcomes, emphasizing the need for a robust dataset for optimal model performance. Their methodology involved a sentence-transformer model named “distiluse-base-multilingual-cased-v2”, which was trained to make the definition embeddings as similar as possible as the word gloss.
 On the other hand, Tran et al. 2022 in SemEval RD task, evaluates Transformer-based models enhanced with LST and BiLSTM layers for reverse dictionary across five languages, named English, Italian, Spanish, French and Russian, showcasing partial improvements over the CODWOE (COmparing Dictionaries and WOrd Embeddings) competition's baseline. It explores monolingual, multilingual, and zero-shot cross-lingual settings, providing insights into the viability of cross-lingual methodologies.
 
-Chen et al. 2022 took a different approach on the English language by embedding both the definitions and words into the same shared space using transformer-based architectures to optimize the model across both tasks simultaneously. The model demonstrated superior performance in reverse dictionary tasks, achieving high accuracy and consistency over previous methods. For definition modeling, while showing improvements, the results suggest areas for future enhancement, particularly in generating higher-quality definitions as indicated by human evaluations and BLEU scores.
+Chen et al. 2022 \cite{Chen2022} took a different approach on the English language by embedding both the definitions and words into the same shared space using transformer-based architectures to optimize the model across both tasks simultaneously. The model demonstrated superior performance in reverse dictionary tasks, achieving high accuracy and consistency over previous methods. For definition modeling, while showing improvements, the results suggest areas for future enhancement, particularly in generating higher-quality definitions as indicated by human evaluations and BLEU scores.
 
-Covering a specific instance of the English reversed dictionary, Siddique et al. 2022 focused on adjective phrases in Precisiated Natural Language, as mentioned that adjectives count for a large amount of content in natural language, hence highlighting the importance of a better representation for it. The proposed transformer-based model was reported to outperform the Onelook.com and WantWords online reverse dictionaries.
+Covering a specific instance of the English reversed dictionary, Siddique et al. 2022 \cite{Siddique2022} focused on adjective phrases in Precisiated Natural Language, as mentioned that adjectives count for a large amount of content in natural language, hence highlighting the importance of a better representation for it. The proposed transformer-based model was reported to outperform the Onelook.com and WantWords online reverse dictionaries.
 
-Following similar approaches in literature, Yan et al. 2020 incorporated BERT and mBERT into the RD task for both monolingual and cross-lingual contexts. The authors propose a method that enables effective word prediction from descriptions without needing parallel corpora for cross-lingual tasks. This approach addresses challenges such as data sparsity, polysemy, and the alignment of cross-lingual word embeddings. The methodology involved modifying the input sequence to include masked tokens that BERT or mBERT would predict, converting these predictions into word scores, and using these scores to rank the possible target words.
+Following similar approaches in literature, Yan et al. 2020 \cite{Yan2020} incorporated BERT and mBERT into the RD task for both monolingual and cross-lingual contexts. The authors propose a method that enables effective word prediction from descriptions without needing parallel corpora for cross-lingual tasks. This approach addresses challenges such as data sparsity, polysemy, and the alignment of cross-lingual word embeddings. The methodology involved modifying the input sequence to include masked tokens that BERT or mBERT would predict, converting these predictions into word scores, and using these scores to rank the possible target words.
 
-Zhang et al. 2019 presents a cross-lingual, multi-channel reverse dictionary model, addressing the variability of input queries and targeting both high and low-frequency words, showing state-of-the-art performance across English and Chinese datasets. The model combines a sentence encoder with multiple characteristic predictors (POS, morpheme, word category, sememe) to enhance word retrieval from descriptions. Experiments demonstrate significant improvements over conventional methods and commercial systems, particularly for human-written descriptions, while suggesting the model's adaptability to diverse linguistic features and robustness in handling variable inputs.
+Zhang et al. 2019 \cite{Zhang2019} presents a cross-lingual, multi-channel reverse dictionary model, addressing the variability of input queries and targeting both high and low-frequency words, showing state-of-the-art performance across English and Chinese datasets. The model combines a sentence encoder with multiple characteristic predictors (POS, morpheme, word category, sememe) to enhance word retrieval from descriptions. Experiments demonstrate significant improvements over conventional methods and commercial systems, particularly for human-written descriptions, while suggesting the model's adaptability to diverse linguistic features and robustness in handling variable inputs.
 
-Finally, covering monolingual English RD, Pilehvar et al. 2019 and Hedderich et al. 2019 emphasized on the importance of representing multi-sense words using different embeddings. Both methodologies address the limitations of single-sense embeddings by allowing for distinct representations of a word's different meanings, demonstrating substantial improvements in performance on the English language.
+Finally, covering monolingual English RD, Pilehvar et al. 2019 \cite{Pilehvar2019} and Hedderich et al. 2019 \cite{Hedderich2019} emphasized on the importance of representing multi-sense words using different embeddings. Both methodologies address the limitations of single-sense embeddings by allowing for distinct representations of a word's different meanings, demonstrating substantial improvements in performance on the English language.
 
 \begin{sidewaystable}
     \centering
     \caption{Summary of recent research on Reverse Dictionaries}
      \renewcommand{\arraystretch}{1.5}%
-    \begin{tabularx}{\textwidth}{|c|c|X|X|X|X|}
+    \begin{tabularx}{\textwidth}{|l|c|X|X|X|X|}
         \hline
         \textbf{Author} & \textbf{Year} &  \textbf{Language} & \textbf{Dataset} & \textbf{Methodology} & \textbf{Results} \\
         \hline
-        \cite{Albakry2023} & 2023 & Arabic, English & KSAA Shared Task 2023 & Ensemble of fine-tuned BERT models & Improved results with ensemble strategy \\
+        Elbakry et al. \cite{Albakry2023} & 2023 & Arabic, English & KSAA Shared Task 2023 RD dataset & Ensemble of fine-tuned BERT models & Improved results with ensemble strategy, winner of the 2023 Shared Task \\
         \hline
-        \cite{Qaddoumi2023} & 2023 & Arabic & ArabicNLP 2023 Shared Task & Modified BERT Multilingual model with data augmentation & Enhanced Arabic word embeddings \\
+        Qaddoumi \cite{Qaddoumi2023} & 2023 & Arabic & KSAA Shared Task 2023 RD dataset & Modified BERT Multilingual model with data augmentation & High ranking in shared task \\
         \hline
-        \cite{Sibaee2023} & 2023 & Arabic & ArabicNLP 2023 Shared Task & SemiDecoder architecture with SBERT encoder & High ranking in shared task \\
+        Sibaee et al. \cite{Sibaee2023} & 2023 & Arabic & KSAA Shared Task 2023 RD dataset & SemiDecoder architecture with SBERT encoder & High ranking in shared task \\
         \hline
-        \cite{Mane2022} & 2022 & Indian languages & Reverse dictionary & mT5 model for Indian languages support & Focus on translating and understanding user inputs \\
+        Mane et al. \cite{Mane2022} & 2022 & Indian & Hindi and Marathi WordNet, and English dictionary deﬁnition by Hill et al. \cite{Hill2016} & mT5 pretrained model & Focus on translating and understanding user inputs \\
         \hline
-        \cite{Ardoiz2022} & 2022 & English & SemEval RD task & Sentence-transformer model & Importance of high-quality lexicographic data \\
+        Ardoiz et al. \cite{Ardoiz2022} & 2022 & English & Data from SemEval 2022 Task \footnote{\href{https://github.com/TimotheeMickus/codwoe/blob/main/data/README.md}{https://github.com/TimotheeMickus/codwoe/blob/main/data/README.md}} & Sentence-transformer model & Importance of high-quality lexicographic data \\
         \hline
-        \cite{Tran2022} & 2022 & English, Italian, Spanish, French, Russian & SemEval RD task & Transformer-based models with LST and BiLSTM layers & Partial improvements over baseline \\
+        Tran et al.\cite{Tran2022} & 2022 & English, Italian, Spanish, French, Russian & SemEval RD task 2023 & Transformer-based models with LST and BiLSTM layers & Partial improvements over baseline \\
         \hline
-        \cite{Chen2022} & 2022 & English & Reverse dictionary & Transformer-based architectures for joint optimization & Superior performance in reverse dictionary tasks \\
+        Chen et al. \cite{Chen2022} & 2022 & English & Reverse dictionary & Transformer-based architectures for joint optimization & Superior performance in reverse dictionary tasks \\
         \hline
-        \cite{Siddique2022} & 2022 & English & Reverse dictionary & Transformer-based model for adjective phrases & Outperforms online reverse dictionaries \\
+        Siddique \cite{Siddique2022} & 2022 & English & Reverse dictionary & Transformer-based model for adjective phrases & Outperforms online reverse dictionaries \\
         \hline
-        \cite{Yan2020} & 2020 & English & Reverse dictionary & BERT and mBERT for monolingual and cross-lingual tasks & Effective word prediction from descriptions \\
+        Yan et al. \cite{Yan2020} & 2020 & English & Reverse dictionary & BERT and mBERT for monolingual and cross-lingual tasks & Effective word prediction from descriptions \\
         \hline
-        \cite{Zhang2019} & 2019 & English, Chinese & Reverse dictionary & Cross-lingual, multi-channel model with sentence encoder & State-of-the-art performance across English and Chinese datasets \\
+        Zhang et al. \cite{Zhang2019} & 2019 & English, Chinese & Reverse dictionary & Cross-lingual, multi-channel model with sentence encoder & State-of-the-art performance across English and Chinese datasets \\
         \hline
-        \cite{Pilehvar2019} & 2019 & English & Reverse dictionary & Multi-sense embeddings for multi-sense words & Improved performance on English RD \\
+        Pilehvar et al. \cite{Pilehvar2019} & 2019 & English & Reverse dictionary & Multi-sense embeddings for multi-sense words & Improved performance on English RD \\
         \hline
-        \cite{Hedderich2019} & 2019 & English & Reverse dictionary & Multi-sense embeddings for multi-sense words & Improved performance on English RD \\
+        Hedderich et al. \cite{Hedderich2019} & 2019 & English & Reverse dictionary & Multi-sense embeddings for multi-sense words & Improved performance on English RD \\
         \hline
     \end{tabularx}
 \end{sidewaystable}
@@ -312,6 +359,8 @@ Reading into the topic from literature proposed some questions:
 \end{enumerate}
 
 Moreover, Arabic RDs are not well discovered and researched for the Arabic language, which is evident by the fact that only few articles have explored it very recently in the literature. Our contribution in this domain will explore and attempt to answer both questions presented earlier.
+
+\newpage
 
 \section{Methodology and proposed solution}
 
@@ -420,8 +469,6 @@ To curate a number of examples for each word, we use a semantic similarity appro
     \end{tabularx}
 \end{table}
 
-
-
 \subsection{Modeling}
 
 This section details the modeling approach employed to construct an Arabic RD retrieval system. The primary objective is to surpass the performance of the 2024 RD Shared Task baseline on the cosine similarity metric. We plan to achieve this objective through a retrieval framework that leverages word embeddings and cosine similarity measures for efficient retrieval of words based on its glosses. The pretrained mT5 model is used, which is a transformer model built on sequence to sequence language modeling approach.
@@ -473,6 +520,8 @@ The task at hand is not a direct sequence to sequence problem, rather an informa
 
 Finally, the pre-trained models employed for the encoder part are mT5 Base and AraT5 V2, both of which are variations of the T5 model. AraT5 V2 is a fine-tuned version of the mT5 base model on diverse Arabic data, making it more specialized for Arabic and suitable for our task \cite{Nagoudi2021}.
 
+\newpage
+
 \section{Data analysis and results}
 
 \subsection{Environment setup}
@@ -517,7 +566,17 @@ The only trainable layer in the model is the linear layer, which is responsible 
 
 This subsection presents the final evaluation results of our model on the validation set. As the shared task withholds target values for the test set, its performance remains unevaluated. Once scores are submitted, official results will be announced alongside the winning solutions. Nonetheless, the validation set performance provides valuable insights into the model's potential.
 
-Cosine similarity and MSE are employed as evaluation metrics, measuring the semantic similarity between embeddings and the reconstruction error, respectively. Table \ref{table:results} summarizes the final results of our models compared to the baseline models.
+Cosine similarity \ref{eq:cosine-similarity} and MSE \ref{eq:mse} are employed as evaluation metrics, measuring the semantic similarity between embeddings and the reconstruction error, respectively. Table \ref{table:results} summarizes the final results of our models compared to the baseline models.
+
+% Cosine Similarity Equation
+\begin{equation}\label{eq:cosine-similarity}
+    Cosine Similarity = \frac{A \cdot B}{\|A\| \times \|B\|}
+\end{equation}
+
+% MSE Equation
+\begin{equation}\label{eq:mse}
+    MSE = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y_i})^2
+\end{equation}
 
 \begin{table}[H]
     \centering
@@ -562,6 +621,8 @@ To further enhance the model's performance, we propose the following:
     \item \textbf{Human Evaluation:} Conducting a human evaluation of the model's predictions to assess the quality of the generated word embeddings and identify areas where the model excels or falls short.
 \end{enumerate} 
 
+\newpage
+
 \section*{Conclusion}
 
 This report presents a comprehensive overview of the Arabic Reverse Dictionary task, detailing the dataset, methodology, and results of our model. The proposed solution leverages a pre-trained mT5 model for word embedding retrieval, with the goal of surpassing the baseline performance on the cosine similarity metric. The model is trained on augmented examples generated from the Arabic Wikipedia dataset, aiming to enrich the glosses with additional context for improved performance.
@@ -570,10 +631,8 @@ The evaluation results on the validation set demonstrate the model's potential, 
 
 \newpage
 
-\printbibheading[title={References},heading=bibintoc] 
-\printbibliography[heading=none]\label{lastpage}
+\printbibliography[title={References}]\label{lastpage}
 
-% \section{Appendix}
 
 \end{document}
 
