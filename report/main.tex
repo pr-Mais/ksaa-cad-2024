@@ -20,7 +20,6 @@
 \usepackage{arabtex}
 \usepackage{utf8}
 \usepackage{float}
-
 \usepackage[justification=raggedright,
             singlelinecheck=false,
             format=plain,
@@ -85,11 +84,14 @@
     
     \begin{center}
     \renewcommand{\arraystretch}{1.5}
-    \begin{tabular}{ l  l }
-        % Remove the \hline command
+    \begin{tabular}{|l|l|}
+        \hline
         \textbf{Student Name} & {Mais Alharaki} \\
+        \hline
         \textbf{Student ID} & 444010562 \\ 
+        \hline
         \textbf{Submission Date} & 2 May 2024 \\ 
+        \hline
     \end{tabular}
     \end{center}
 
@@ -105,12 +107,41 @@
 \newpage
 
 \section*{Declaration}
+
+\noindent
+\textbf{I hereby certify that:}
+
+\begin{itemize}
+\item[-] This material, which I now submit for assessment on the programme of study leading to the award of MSc Computing (Data Science) is entirely my own work, and that I have exercised reasonable care to ensure that the work is original, and does not to the best of my knowledge breach any law of copyright, and has not been taken from the work of others save and to the extent that such work has been cited and acknowledged within the text of my work.
+\item[-] Due acknowledgement has been given in the bibliography and references to ALL sources be they printed, electronic or personal.
+\item[-] Unless this dissertation has been confirmed as confidential, I agree to an entire electronic copy or sections of the dissertation to be available to allow future students the opportunity to see examples of past dissertations.
+\item[-] I agree to my dissertation being submitted to a plagiarism detection service, where it will be stored in a database and compared against work submitted from this or any other Department or from other institutions using the service. In the event of the service detecting a high degree of similarity between content within the service this will be reported back to my supervisor and program leader, who may decide to undertake further investigation that may ultimately lead to disciplinary actions, should instances of plagiarism be detected.
+\item[-] I have read the PNU Policy Statement on Ethics in Research (\url{https://www.pnu.edu.sa/ar/Deanship/PostGraduate/Documents/دليل%20الأخلاقيات%20البحثية%20والأمانة%20العلمية%20والملكية%20الفكرية.pdf}) and I confirm that ethical issues have been considered, evaluated and appropriately addressed in this research.
+\end{itemize}
+
+\vspace{1cm}
+
+\noindent
+Signed:
+
+\noindent
+Candidate Name: \underline{Mais Alheraki}
+
+\noindent
+ID Number: \underline{444010562}
+
+\noindent
+Date: \underline{2 May 2024}
+
+
+
 \newpage
 
-\section*{List of figures}
+\thispagestyle{empty}
+\listoffigures
 \newpage
-
-\section*{List of tables}
+\thispagestyle{empty}
+\listoftables
 \newpage
 
 \section*{List of abbreviations}
@@ -128,6 +159,17 @@
 \newpage
 
 \section{Introduction}
+
+% Introduce the topic and the problem statement
+
+The ambition of this research is to pioneer a reverse dictionary model. Dictionaries, in their conventional role, offer meanings for known words. However, the reverse dictionary model proposed here assists when only the description of a word is known, not the word itself. This model is particularly crucial for situations where the user can articulate a word's concept or function in one language but needs its equivalent in another \cite{Siddique2019}, which is studied as a cognitive phenomenon known as tip-of-the-tongue \cite{Brown1966}.
+
+This project aims to enhance word retrieval processes by leveraging data-driven techniques to establish a more intuitive and accurate connection between conceptual descriptions and corresponding terms. This approach is especially designed to enhance the language learning experience, employing sophisticated data analytics to map natural cross-lingual inputs to lexical outputs. The focus on Arabic, a less explored language in this subject, presents a unique opportunity to contribute significantly to the field of data science by extending its applications to new linguistic territories.
+
+The domain of reverse dictionaries, while advancing in languages like English and Chinese, as exemplified by systems like WantWords \cite{Qi2020}, remains significantly underdeveloped for the Arabic language. Existing reverse dictionary systems predominantly cater to monolingual users and often do not support cross-linguistic queries, a critical feature for a globalized world. This gap is particularly pronounced in the context of the Arabic language, which, despite its rich linguistic heritage and widespread use, lacks robust, technologically advanced tools for reverse lexical searches, where the only ongoing effort in this domain is demonstrated by the 1st Arabic Reverse Dictionary shared task \footnote{This task was launched in 2023 by King Salman Global Academy for Arabic Language and can be found here: \href{https://arai.ksaa.gov.sa/sharedTask/}{arai.ksaa.gov.sa/sharedTask}}.
+
+This research is building upon the new ArabicNLP 2024 Shared Task, which provides a dataset of 39,214 word-gloss pairs, each with a corresponding word embedding. The aim is to surpass the baseline performance by employing new state-of-the-art deep learning models and innovative data augmentation techniques.
+
 
 \section{Background material}
 % Describe the field and present literature review
@@ -196,6 +238,8 @@ While the core Transformer architecture provides a powerful foundation, further 
 
 \subsection{ArabicNLP 2024 Shared Task}
 
+The ArabicNLP 2024 Shared Task \footnote{The new task has been launched in May this year, more information can be found here: \href{https://arai.ksaa.gov.sa/sharedTask2024/}{arai.ksaa.gov.sa/sharedTask}} is a recent initiative that aims to advance the field of Arabic natural language processing by providing a platform for researchers to collaborate and innovate. The Shared Task focuses on various NLP challenges, including machine translation, named entity recognition, and reverse dictionary tasks. The reverse dictionary task specifically targets the development of models capable of predicting words from their definitions in Arabic. Participants are provided with a dataset containing word-gloss pairs and corresponding word embeddings, challenging them to build models that can accurately predict the target words based on the provided glosses.
+
 
 \section{Related work}
 
@@ -227,8 +271,7 @@ Finally, covering monolingual English RD, Pilehvar et al. 2019 and Hedderich et 
 \begin{sidewaystable}
     \centering
     \caption{Summary of recent research on Reverse Dictionaries}
-    \label{tab:wide-item-tbl}
-    \renewcommand{\arraystretch}{1.5}%
+     \renewcommand{\arraystretch}{1.5}%
     \begin{tabularx}{\textwidth}{|c|c|X|X|X|X|}
         \hline
         \textbf{Author} & \textbf{Year} &  \textbf{Language} & \textbf{Dataset} & \textbf{Methodology} & \textbf{Results} \\
@@ -341,7 +384,7 @@ As noticed while performing data exploration, the glosses are usually short and 
 \begin{table}[H]
     \centering
     \caption{Words with short glosses}
-    \label{table:word-gloss}
+    \label{table:word-short-gloss}
     \renewcommand{\arraystretch}{1.5}%
     \begin{tabularx}{\textwidth}{|X|X|}
         \hline
@@ -358,13 +401,14 @@ Average users are unlikely to provide such precise descriptions, on the contrary
 
 The manual curation of contextually relevant examples is a laborious and resource-demanding task, which, given the short time frame of this experiment, is not a feasible solution, hence the need to find an automatic way to curate examples from publicly available Arabic datasets. 
 
-The dataset of choice is the Arabic wikipedia embeddings from the Embedding Archives project by CohereAI, which contains 3.1 million entries from Wikipedia, each entry containing a text, and the embedding of that text (or embedding), alongside other metadata. Text embeddings in the dataset are achieved through CohereAI's multilingual-22-12 semantic embeddings model, trained for multilingual comprehension encompassing 101 languages including Arabic. This closed-source model is accessible via Cohere's API \cite{Kamalloo2023}.
+The datThe dataset of choice is the Arabic wikipedia embeddings from the Embedding Archives project by CohereAI, which contains 3.1 million entries from Wikipedia, each entry containing a text, and the embedding of that text (or embedding), alongside other metadata. Text embeddings in the dataset are achieved through CohereAI's multilingual-22-12 semantic embeddings model, trained for multilingual comprehension encompassing 101 languages including Arabic. This closed-source model is accessible via Cohere's API (Kamalloo2023).
+aset of choice is the Arabic wikipedia embeddings from the Embedding Archives project by CohereAI, which contains 3.1 million entries from Wikipedia, each entry containing a text, and the embedding of that text (or embedding), alongside other metadata. Text embeddings in the dataset are achieved through CohereAI's multilingual-22-12 semantic embeddings model, trained for multilingual comprehension encompassing 101 languages including Arabic. This closed-source model is accessible via Cohere's API \cite{Kamalloo2023}.
 
-To curate a number of examples for each word, we use a semantic similarity approach by embedding the word and gloss using multilingual-22-12 model, and running a vector search using cosine similarity, to look for the top 5 closest entries from Wikipedia to the given dictionary gloss. As observed in Table (no.), the example may not directly contain the dictionary entry, but the surrounding context establishes a clear semantic relationship with the word's meaning.
+To curate a number of examples for each word, we use a semantic similarity approach by embedding the word and gloss using multilingual-22-12 model, and running a vector search using cosine similarity, to look for the top 5 closest entries from Wikipedia to the given dictionary gloss. As observed in Table \ref{table:word-gloss}, the example may not directly contain the dictionary entry, but the surrounding context establishes a clear semantic relationship with the word's meaning.
 
 \begin{table}[H]
     \centering
-    \caption{Words with short glosses}
+    \caption{A word with its gloss and 2 examples from Wikipedia}
     \label{table:word-gloss}
     \renewcommand{\arraystretch}{1.5}%
     \begin{tabularx}{\textwidth}{|>{\centering}c|>{\centering\arraybackslash}X|X|}
@@ -375,6 +419,8 @@ To curate a number of examples for each word, we use a semantic similarity appro
         \hline
     \end{tabularx}
 \end{table}
+
+
 
 \subsection{Modeling}
 
@@ -391,15 +437,31 @@ Data preprocessing can be summarized into two main steps:
     \item \textbf{Tokenization:} The augmented text is tokenized using the mT5 tokenizer. This tokenizer leverages SentencePiece, a subword-level tokenization algorithm trained on the original corpora used to train the mT5 model.
 \end{enumerate}
 
-The following diagram visualizes the tokenization process for a sample sentence from the dataset.
+Figure \ref{fig:tokenized-sentence} visualizes the result of tokenizing an Arabic sentence from the dataset, using mT5 pre-trained tokenizer.
 
-% TODO add the diagram
+\begin{figure}[H]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.6\textwidth]{tokenized-sentence.png}
+    \caption{A sample sentence tokenized using the mT5 tokenizer}
+    \label{fig:tokenized-sentence}
+\end{figure}
 
 \subsubsection{Model architecture}
 
-The proposed model architecture leverages a pre-trained mT5 model as its foundation, particularly the encoder part of the model. The last hidden layer of the mT5 encoder contains the embedding information needed to represent the input sentence in the target words’ space. 
+The proposed model architecture leverages a pre-trained mT5 model as its foundation, particularly the encoder part of the model. The last hidden layer of the mT5 encoder contains the embedding information needed to represent the input sentence in the target words’ space. Figure \ref{fig:model-arch} illustrates the model architecture, which consists of an encoder, a pooling layer, and a linear layer.
 
-To adapt the last hidden state of the encoder to output an embedding of a specific shape, a pooling layer will first transform the hidden state matrix to a vector of a fixed length of 718 (the mT5 encoder output shape). This layer can be represented by the following equation. This equation calculates a weighted sum of the last hidden states \(O\) where the weights are determined by the attention mask \(A\), normalized by the total weight (or count of non-zero entries in \(A\) for each sequence).
+The input is a vector of size 256, which is the tokenized and encoded input sentence. The input is then passed through the mT5 encoder, which outputs a matrix of shape (batch size, sequence length, hidden size). The last hidden state of the encoder is then passed through a pooling layer to transform it into a vector of a fixed length of 718. Finally, the output of the pooling layer is passed through a linear layer that transforms it into the desired target shape, which is 256 for electra, 768 for bertseg, and 768 for bertmsa.
+
+\begin{figure}[H]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.6\textwidth]{model-arch.png}
+    \caption{A sample sentence tokenized using the mT5 tokenizer}
+    \label{fig:model-arch}
+\end{figure}
+
+The last hidden state of the mT5 encoder is not a vector, rather a matrix, and adapt it to output an embedding of a specific shape, a pooling layer will first transform the hidden state matrix to a vector of a fixed (the mT5 encoder output shape). This layer can be represented by the following equation. This equation calculates a weighted sum of the last hidden states \(O\) where the weights are determined by the attention mask \(A\), normalized by the total weight (or count of non-zero entries in \(A\) for each sequence).
 
 \begin{equation}
     pool = \frac{\sum_{j,k} (O_{ijk} \cdot A_{ijk})}{\sum_j A_{ij}}
@@ -415,13 +477,101 @@ Finally, the pre-trained models employed for the encoder part are mT5 Base and A
 
 \subsection{Environment setup}
 
-This subsection outlines the software environment and hardware specifications utilized for example generation, model development and experimentation. Generally, the technical stack leverages Python for development, and Google Colab for development.
+This subsection details the software environment and hardware specifications used for example generation, model development, and experimentation. Primarily, the technical stack leverages Python and Google Colab for development.
 
+For example generation, we utilized Postgres engine for SQL with the pgvector extension. This extension enables efficient storage and querying of vectors based on cosine similarity. Additionally, the HNSW (Hierarchical Navigable Small World) algorithm is used for indexing, facilitating fast and accurate nearest neighbor searches within the high-dimensional vector space.
+
+Model development was conducted within a Google Colab environment equipped with a single A100 GPU and 12 GB RAM. The chosen framework for this task was PyTorch, which is specifically designed for deep learning. Additionally, few other libraries were employed, notably the Hugging Face Transformers for loading and training of pre-trained models with the transformer architecture.
+
+\subsection{Data expansion analysis}
+
+To generate an example for a single entry in the dataset, we first merge the word and its gloss. In Figure \ref{fig:examples-generation}, the word is \<بَسْط> and what comes after it is the gloss, which forms the input sentence. Next, the input is transformed into an embedding using the multilingual-22-12 model API, which results in a vector of size 768, this ensures we’re projecting the input into the Wikipedia dataset space. The next step is to find the closest texts to our input in the space, which is achievable using cosine similarity, such that the closest embedding to the input is the example we’re looking for.
+
+\begin{figure}[H]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.6\textwidth]{examples-generation.png}
+    \caption{The process of generating a single example for a word:gloss pair}
+    \label{fig:examples-generation}
+\end{figure}
+
+While enriching the glosses with additional context demonstrates promise, it is not without limitations. Random sampling of the results reveals instances where the retrieved entries exhibit a weaker semantic connection to the dictionary entry. Consequently, human intervention remains necessary for data labeling and refinement to ensure better quality, potentially augmented by incorporating additional data sources to enrich the retrieval process.
+
+\subsection{Training}
+
+The training is done on the training set, with Mean Square Error loss function and an Adam optimizer with a learning rate value of 3e-5, which has been obtained via trial and error. Training has been done for 1 epoch, as with more epochs we noticed an overfitting over the training data, which is expected given that we’re only training a single linear layer. Figure \ref{fig:training} shows the full training pipeline with target variations.
+
+The only difference between the models is the target size, which is 256 for electra, 768 for bertseg, and 768 for bertmsa. The model is trained on the training set and evaluated on the validation set using cosine similarity and Mean Squared Error (MSE) as evaluation metrics.
+
+The only trainable layer in the model is the linear layer, which is responsible for transforming the output of the pooling layer into the desired target shape. The rest of the model is frozen, as it is pre-trained and does not require further training.
+
+\begin{figure}[H]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=\textwidth]{training.png}
+    \caption{The training pipeline with target variations}
+    \label{fig:training}
+\end{figure}
+
+\subsection{Evaluation results}
+
+This subsection presents the final evaluation results of our model on the validation set. As the shared task withholds target values for the test set, its performance remains unevaluated. Once scores are submitted, official results will be announced alongside the winning solutions. Nonetheless, the validation set performance provides valuable insights into the model's potential.
+
+Cosine similarity and MSE are employed as evaluation metrics, measuring the semantic similarity between embeddings and the reconstruction error, respectively. Table \ref{table:results} summarizes the final results of our models compared to the baseline models.
+
+\begin{table}[H]
+    \centering
+    \caption{Results of the model on the validation set}
+    \label{table:results}
+    \renewcommand{\arraystretch}{1.5}%
+    \begin{tabularx}{\textwidth}{|>{\raggedright}X|>{\raggedright\arraybackslash}X|X|X|}
+        \hline
+        \textbf{Model} & \textbf{Embedding} & \textbf{Cosine Similarity} & \textbf{MSE} \\
+        \hline
+        mT5-base (Ours) & electra & 0.5107 & 0.2498 \\\cline{2-4}
+        & bertseg & 0.7657 & 0.0806 \\\cline{2-4}
+        & bertmsa & 0.7012 & 0.3434 \\\cline{2-4}
+        \hline
+        AraT5v2-base (Ours) & electra & 0.5152 & 0.2459 \\\cline{2-4}
+        & bertseg & 0.7656 & 0.0789 \\\cline{2-4}
+        & bertmsa & 0.6965 & 0.3484 \\\cline{2-4}
+        \hline
+        CamelBERT (Baseline) & electra & 0.8185 & 0.2195 \\\cline{2-4}
+        & bertseg & \textbf{0.8436*} & 0.0555 \\\cline{2-4}
+        & bertmsa & 0.5113 & 0.2428 \\\cline{2-4}
+        \hline
+        MARBERT (Baseline) & electra & \textbf{0.6948*} & 0.5016 \\\cline{2-4}
+        & bertseg & 0.7603 & 0.0818 \\\cline{2-4}
+        & bertmsa & \textbf{0.7368*} & 0.1457 \\\cline{2-4}
+        \hline
+    \end{tabularx}
+\end{table}
+
+For cosine similarity, higher values (closer to 1) indicate better performance in capturing semantic relationships between the generated embeddings and the original word embedding. Lower MSE values indicate better reconstruction accuracy, meaning the model can more faithfully reproduce the original word embedding from the generated embeddings. The results presented are averages across the validation set.
+
+Our mT5-base model trained on bertseg embeddings achieves the highest cosine similarity score (0.7657) among our models, marginally exceeding the MARBERT baseline (0.7603) by 0.0054. However, it falls short of the CamelBERT baseline across all embedding types, with the largest gap observed using electra embeddings (e.g. 0.8185 vs. 0.5107).
+
+Possible explanations for the performance gap include the model's architecture, training duration, and the quality of the augmented examples. The mT5 model may require further fine-tuning or additional training epochs to achieve optimal performance. Moreover, the quality of the augmented examples may impact the model's ability to learn meaningful word embeddings, necessitating further refinement.
+
+To further enhance the model's performance, we propose the following:
+\begin{enumerate}
+    \item \textbf{Hyperparameter Tuning:} Optimizing hyperparameters like learning rate, batch size, and optimizer settings could potentially improve performance.
+    \item \textbf{Advanced Architectures:} Exploring more sophisticated architectures like larger pre-trained models (e.g., mT5-large) or incorporating techniques like selective training of specific model components could potentially lead to significant performance gains.
+    \item \textbf{Fine-tuning:} Fine-tuning the model on a larger dataset or domain-specific data could improve its performance on the task by adapting the model to the specific characteristics of the data.
+    \item \textbf{Transfer Learning:} Leveraging transfer learning from models pre-trained on similar tasks or domains could provide a head start for training the model on the reverse dictionary task.
+    \item \textbf{Human Evaluation:} Conducting a human evaluation of the model's predictions to assess the quality of the generated word embeddings and identify areas where the model excels or falls short.
+\end{enumerate} 
+
+\section*{Conclusion}
+
+This report presents a comprehensive overview of the Arabic Reverse Dictionary task, detailing the dataset, methodology, and results of our model. The proposed solution leverages a pre-trained mT5 model for word embedding retrieval, with the goal of surpassing the baseline performance on the cosine similarity metric. The model is trained on augmented examples generated from the Arabic Wikipedia dataset, aiming to enrich the glosses with additional context for improved performance.
+
+The evaluation results on the validation set demonstrate the model's potential, with the mT5-base model trained on bertseg embeddings achieving the highest cosine similarity score among our models. However, the model falls short of the CamelBERT baseline across all embedding types, indicating room for improvement. Possible avenues for enhancing the model's performance include hyperparameter tuning, advanced architectures, fine-tuning, transfer learning, and human evaluation.
 
 \newpage
 
-\printbibheading[title={References},heading=bibnumbered]\label{lastpage}
-\printbibliography[heading=subbibliography]
+\printbibheading[title={References},heading=bibintoc] 
+\printbibliography[heading=none]\label{lastpage}
 
 % \section{Appendix}
 
