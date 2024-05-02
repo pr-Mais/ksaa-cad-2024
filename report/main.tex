@@ -1,5 +1,6 @@
 \documentclass[15pt]{article}
-\linespread{1} 
+\linespread{1.5}
+\renewcommand{\normalsize}{\fontsize{11pt}{10}\selectfont}  
 \setlength{\parindent}{0pt}
 
 % Packages
@@ -318,7 +319,7 @@ Finally, covering monolingual English RD, Pilehvar et al. 2019 \cite{Pilehvar201
 \begin{sidewaystable}
     \centering
     \caption{Summary of recent research on Reverse Dictionaries}
-     \renewcommand{\arraystretch}{1.5}%
+     \renewcommand{\arraystretch}{1.5}
     \begin{tabularx}{\textwidth}{|l|c|X|X|X|X|}
         \hline
         \textbf{Author} & \textbf{Year} &  \textbf{Language} & \textbf{Dataset} & \textbf{Methodology} & \textbf{Results} \\
@@ -554,7 +555,7 @@ The only difference between the models is the target size, which is 256 for elec
 
 The only trainable layer in the model is the linear layer, which is responsible for transforming the output of the pooling layer into the desired target shape. The rest of the model is frozen, as it is pre-trained and does not require further training.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \captionsetup{justification=centering}
     \includegraphics[width=\textwidth]{training.png}
@@ -609,6 +610,24 @@ Cosine similarity \ref{eq:cosine-similarity} and MSE \ref{eq:mse} are employed a
 For cosine similarity, higher values (closer to 1) indicate better performance in capturing semantic relationships between the generated embeddings and the original word embedding. Lower MSE values indicate better reconstruction accuracy, meaning the model can more faithfully reproduce the original word embedding from the generated embeddings. The results presented are averages across the validation set.
 
 Our mT5-base model trained on bertseg embeddings achieves the highest cosine similarity score (0.7657) among our models, marginally exceeding the MARBERT baseline (0.7603) by 0.0054. However, it falls short of the CamelBERT baseline across all embedding types, with the largest gap observed using electra embeddings (e.g. 0.8185 vs. 0.5107).
+
+\begin{table}[H]
+    \centering
+    \caption{Predictions for a sample word:gloss pair}
+    \label{table:results-sample}
+    \renewcommand{\arraystretch}{1.5}%
+    \begin{tabularx}{\textwidth}{|c|X|X|}
+        \hline
+        \textbf{Input} & \textbf{Top retrieved predictions} & \textbf{Ground truth} \\
+        \hline
+        \<منسوب إلى تاريخ، له أهمية كبيرة> & \<زراعي> & \<تاريخي> \\
+        \hline
+        \<جَرَّعَهُ الماءَ: سَقَاه إياه> & \<شِرْب> & \<جَرَّع> \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+Table \ref{table:results-sample} showcases the model's predictions for two sample word:gloss pairs, highlighting the top retrieved predictions and the ground truth. It can be noticed that the model's predictions are not always accurate, with the first example predicting \<زراعي> instead of the correct \<تاريخي>, and the second example predicting \<شِرْب> instead of the correct \<جَرَّع>, though it can be seen that the predictions have some syntactic similarity to the ground truth, indicating that the model is learning some meaningful relationships between the words.
 
 Possible explanations for the performance gap include the model's architecture, training duration, and the quality of the augmented examples. The mT5 model may require further fine-tuning or additional training epochs to achieve optimal performance. Moreover, the quality of the augmented examples may impact the model's ability to learn meaningful word embeddings, necessitating further refinement.
 
