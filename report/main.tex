@@ -1,6 +1,6 @@
 \documentclass[15pt]{article}
-\linespread{1.5}
-\renewcommand{\normalsize}{\fontsize{11pt}{10}\selectfont}  
+\linespread{1.6}
+\renewcommand{\normalsize}{\fontsize{12pt}{10}\selectfont}  
 \setlength{\parindent}{0pt}
 
 % Packages
@@ -219,50 +219,48 @@ The upcoming sections are structured as follows:
 \newpage
 
 \section{Background material}
-% Describe the field and present literature review
 
-This chapter lays the groundwork for understanding the subsequent sections of this dissertation by exploring the fundamentals of natural language processing and deep learning. These disciplines are instrumental to the overall research presented here.
+This chapter lays the groundwork for understanding the subsequent sections of this report by exploring the fundamentals of natural language processing, deep learning, text embeddings, transformers, and more. These disciplines are instrumental to the overall research presented here.
 
 \subsection{Natural Language Processing}
+
 Language is the way we communicate and exchange information, it’s composed of symbols, rules and repetitive expressions. Natural Language Processing or NLP is a field where AI and linguistics cross together. It's interested in enabling machines to understand and model language, therefore enabling more natural communication between humans and machines.
 
-Natural Language Processing (NLP) encompasses two major subfields: Natural Language Understanding (NLU) and Natural Language Generation (NLG). NLU focuses on enabling computers to comprehend the meaning of words, phrases, and expressions within human language. In contrast, NLG concerns the process of generating meaningful phrases and paragraphs, essentially allowing machines to "write" human-like text \cite{Khurana2023}.
+NLP encompasses two major subfields: Natural Language Understanding (NLU) and Natural Language Generation (NLG). NLU focuses on enabling computers to comprehend the meaning of words, phrases, and expressions within human language. In contrast, NLG concerns the process of generating meaningful phrases and paragraphs, essentially allowing machines to "write" human-like text \cite{Khurana2023}.
 
-\subsection{Reverse Dictionary and Data Science}
-
-Dictionaries in their conventional form map words to a set of meanings or definitions, often combining them with some examples on how the words are used in context. Dictionaries are the foundation of various NLP tasks, serving as lexical resources, where they help in understanding information such as word meanings, parts of speech, and relationships between words. Tasks such as stemming and lemmatization also rely on dictionaries to return words to their base form.
-
-Reversed dictionaries are a form of dictionaries where a description yields a set of words from the dictionary that best matches the description. Traditionally used as tools for linguistic exploration, reversed dictionaries have evolved to play a significant role in data science. Initially conceived to assist with language retrieval challenges, they now offer innovative solutions in data analysis and processing. A prime use-case in data science is their application in data exploration and analysis, where reverse dictionaries facilitate the identification of relevant features within complex datasets by generating key terms or phrases. This enhances the efficiency of data mining and fosters the discovery of new insights \cite{Chen2022}.
-
-In machine learning, reverse dictionaries aid in feature engineering, enriching model inputs with nuanced context. This utility extends to automated metadata generation for effective data cataloging and management. Additionally, they enhance content curation and recommendation systems, offering more precise content descriptors and improving recommendation relevance.
-
-Furthermore, reverse dictionaries streamline text summarization and topic modeling \cite{Griffiths2004}, assisting in distilling essential information from large text volumes. They also play a crucial role in improving chatbot and customer service automation by accurately interpreting user queries and intents.
-
-\subsection{Deep Learning}
+\subsection{Deep learning}
 
 Deep learning is a subfield of machine learning inspired by the structure and function of the human brain. It utilizes artificial neural networks (ANNs) with multiple hidden layers, enabling the extraction of complex patterns from large amounts of data. This capability has revolutionized various fields, including computer vision, natural language processing (NLP), and speech recognition.
 
-Though the idea can be traced back many years, deep learning only recently has proved to outperform traditional ML algorithms in many tasks, including NLP.
+Though the idea can be traced back many years, deep learning only recently has proved to outperform traditional ML algorithms in many areas, including NLP. In 2016, \cite{Vaswani2017} introduced the Transformer architecture, which has since become the foundation for many state-of-the-art NLP models, such as BERT, GPT-3, and T5.
 
 However, training deep learning models from scratch often requires significant computational resources and large amounts of labeled data. This can be a barrier for tasks with limited data availability. Here's where transfer learning comes in as a powerful technique.
 
-Transfer learning is an approach that leverages knowledge gained from a pre-trained deep learning model on a source task and applies it to a new, related target task. By transferring the learned weights and features from the pre-trained model, the target model can achieve good performance even with limited training data. This is particularly beneficial for NLP tasks, where obtaining large amounts of labeled data can be expensive and time-consuming.
+\subsubsection{Transfer Learning}
+
+Transfer learning is an approach that leverages knowledge gained from a pre-trained deep learning model on a source task and applies it to a new, related target task. By transferring the learned weights and features from a pre-trained model, a target model can achieve good performance even with limited training data. This is particularly beneficial for NLP tasks, where obtaining large amounts of labeled data can be expensive and time-consuming.
+
+A popular example of transfer learning models borrowd from the computer vision field is the ImageNet \cite{ILSVRC15} dataset, where models trained on it can be used for other image classification tasks, naming VGG \cite{Simonyan2014}, ResNet \cite{He2015}, and Inception \cite{Simonyan2014}.
+
+Models trained on large corupses of text are known as "language models", these models learn to assign probabilities to tokens (words or characters) given their occurance in the training corpus. Pre-trained language models can be used as a starting point, or as sometimes referred to as \textbf{checkpoints}, to a lot of downstream NLP tasks such as sentiment analysis, text classification, and topic modeling, instead of starting from scratch, which saves a vast amount of time and computational resources, given that a model have already learned the patterns from the original data.
+
+Neural networks allowed for the development of more complex language models, where models can analyzed huge amounts of text data and learn the patterns and relationships between words, using various architectures such as RNNs, LSTMs, and Transformers.
 
 \subsubsection{Sequence to Sequence approach for language modeling}
 
-The sequence to sequence (Seq2Seq) approach is a powerful deep learning architecture specifically designed for tasks that involve processing and generating sequences. In NLP, this translates to tasks like machine translation, where an input sequence in one language is transformed into an output sequence in another language. Seq2Seq models typically consist of two recurrent neural networks (RNNs) or transformers:
+The sequence to sequence (Seq2Seq) approach is a powerful deep learning architecture specifically designed for tasks that involve processing and generating sequences. In NLP, this translates to tasks like machine translation, where an input sequence in one language is transformed into an output sequence in another language. Seq2Seq models typically consist of two deep neural networks:
 \begin{enumerate}
-    \item[-] Encoder RNN/Transformer: This network processes the input sequence and encodes it into a fixed-length vector representation capturing the semantic meaning.
-    \item[-] Decoder RNN/Transformer: This network utilizes the encoded representation from the encoder and generates the output sequence one element at a time, conditioned on the previously generated elements.
+    \item[-] Encoder: This network processes the input sequence and encodes it into a fixed-length vector representation capturing the semantic meaning.
+    \item[-] Decoder: This network utilizes the encoded representation from the encoder and generates the output sequence one element at a time, conditioned on the previously generated elements.
 \end{enumerate}
 
-Recent advancements in Seq2Seq models include attention mechanisms, which allow the decoder to selectively focus on relevant parts of the encoded input during the generation process.
-
-\subsubsection{Text embeddings and tokenization}
-
-Text embeddings are a crucial component in NLP tasks. They represent words or sub-word units (like characters) as numerical vectors in a high-dimensional space, where words with similar meanings tend to be positioned closer together. Popular techniques for text embedding include Word2Vec and GloVe, which learn these representations by analyzing large text corpora.
+\subsubsection{Tokenization and text embeddings}
 
 Tokenization is the process of breaking down text data into smaller units suitable for processing by deep learning models. These units can be words, characters, or even sub-word units like morphemes. The choice of tokenization strategy can significantly impact the performance of deep learning models in NLP tasks.
+
+Text embeddings represent the tokens as numerical vectors in a high-dimensional space, where words with similar meanings tend to be positioned closer together. Popular techniques for text embedding include Word2Vec and GloVe, which learn these representations by analyzing large text corpora.
+
+In the case of deep learning models, text embeddings are often learned as part of the training process, and is often the result of the encoder part of a sequence-to-sequence model, where the input text is transformed into a fixed-length vector representation.
 
 \subsubsection{SentencePiece tokenizer}
 
@@ -270,22 +268,36 @@ SentencePiece is an unsupervised text tokenizer, used by the T5 models for text 
 
 During tokenization, SentencePiece analyzes the training corpus to identify frequently occurring subword units and builds a vocabulary. When processing text, it segments the input into these subword units and assigns them unique token IDs, which the T5 model uses for its internal operations. This subword-level representation provides T5 with a more granular understanding of the text, enhancing its ability to perform various NLP tasks effectively.
 
-\subsubsection{Transformer Architecture: A Paradigm Shift}
+\subsubsection{Transformer architecture: a paradigm shift}
 
-The Transformer architecture, introduced by Vaswani et al. in 2017 in the famous paper “Attention is All You Need” \cite{Vaswani2017}, has become a dominant force in NLP due to its ability to efficiently capture long-range dependencies within sequences. Unlike RNNs, which process sequences sequentially, Transformers rely solely on attention mechanisms. These mechanisms allow each element in the input sequence to attend to (focus on) other elements, enabling the model to understand the context of each word in relation to the entire sequence. This parallel processing approach facilitates faster training compared to RNNs and is particularly effective for tasks requiring long-range dependency modeling, such as machine translation and text summarization
+The Transformer architecture, introduced by Vaswani et al. in 2017 in the famous paper “Attention is All You Need” \cite{Vaswani2017}, has become a dominant force in NLP due to its ability to efficiently capture long-range dependencies within sequences. Unlike RNNs, which process sequences sequentially, Transformers rely solely on attention mechanisms. These mechanisms allow each element in the input sequence to attend to (focus on) other elements, enabling the model to understand the context of each word in relation to the entire sequence. This parallel processing approach facilitates faster training compared to RNNs and is particularly effective for tasks requiring long-range dependency modeling, such as machine translation and text summarization.
 
-\subsubsection{BERT vs. T5: Pre-trained Transformer Models}
+\subsubsection{Pre-trained transformer models: BERT and T5}
 
 While the core Transformer architecture provides a powerful foundation, further advancements have led to the development of specialized pre-trained models like BERT and T5. These models leverage the strengths of Transformers and are pre-trained on massive amounts of unlabeled text data, allowing them to learn general contextual representations of language.
 
 \begin{enumerate}
-    \item[-] \textbf{BERT (Bidirectional Encoder Representations from Transformers)}: Introduced by Google \cite{devlin2018} in 2018, BERT is a pre-trained Transformer model that excels at understanding the context of words in a sentence and their relationships. It can be fine-tuned for various NLP tasks like question answering and sentiment analysis. However, BERT requires fine-tuning for specific tasks, which can be computationally expensive.
+    \item[-] \textbf{BERT (Bidirectional Encoder Representations from Transformers)}: Introduced by Google AI \cite{devlin2018} in 2018, BERT is a pre-trained Transformer model that excels at understanding the context of words in a sentence and their relationships. It can be fine-tuned for various NLP tasks like question answering and sentiment analysis. However, BERT requires fine-tuning for specific tasks, which can be computationally expensive.
     \item[-] \textbf{T5 (Text-to-Text Transfer Transformer)}: Introduced also by Google AI in 2019 \cite{Raffel2019}, T5 utilizes a text-to-text format for all NLP tasks. It employs a single encoder-decoder architecture and learns to transform the input sequence into the desired output sequence. This approach makes T5 versatile, allowing it to handle a wide range of tasks by simply changing the format of the input and desired output. T5 often requires less fine-tuning compared to BERT, making it quicker to deploy for various tasks. However, it might not achieve the same level of deep contextual understanding as BERT in tasks where this is crucial.
 \end{enumerate}
 
+\subsection{Reverse dictionaries}
+
+Dictionaries in their conventional form map words to a set of meanings or definitions, often combining them with some examples on how the words are used in context. Dictionaries are the foundation of various NLP tasks, serving as lexical resources, where they help in understanding information such as word meanings, parts of speech, and relationships between words. Tasks such as stemming and lemmatization also rely on dictionaries to return words to their base form. However, traditional dictionaries are unidirectional, providing word meanings based on the input word.
+
+Reverse dictionaries are a form of dictionaries where a description yields a set of words from the dictionary that semantically matches the description. Traditionally used as tools for linguistic exploration, reverse dictionaries have evolved to play a significant role in data science. A prime use-case is their application in data exploration and analysis, where reverse dictionaries facilitate the identification of relevant features within complex textual datasets by generating key terms or phrases. This enhances the efficiency of data mining and fosters the discovery of new insights \cite{Chen2022}.
+
+In machine learning, reverse dictionaries aid in feature engineering, enriching model inputs with nuanced context. This utility extends to automated metadata generation for effective data cataloging and management. Additionally, they enhance content curation and recommendation systems, offering more precise content descriptors and improving recommendation relevance.
+
+Furthermore, reverse dictionaries streamline text summarization and topic modeling \cite{Griffiths2004}, assisting in distilling essential information from large text volumes. They also play a crucial role in improving chatbot and customer service automation by accurately interpreting user queries and intents.
+
 \subsection{ArabicNLP 2024 Shared Task}
 
-The KSAA-CAD Shared Task\footnote{The new task has been launched in May this year, more information can be found here: \href{https://arai.ksaa.gov.sa/sharedTask2024/}{arai.ksaa.gov.sa/sharedTask}} is a part of the ArabicNLP \footnote{\href{https://arabicnlp2024.sigarab.org/}{arabicnlp2024.sigarab.org}} conference for 2024, and it aims to advance the field of Arabic natural language processing by providing a platform for researchers to collaborate and innovate. This task specifically targets the development of models capable of predicting words from their definitions in Arabic. Participants are provided with a dataset containing word-gloss pairs and corresponding word embeddings, challenging them to build models that can accurately predict the target words based on the provided glosses.
+The KSAA-CAD Shared Task\footnote{The new task has been launched in May this year, more information can be found here: \href{https://arai.ksaa.gov.sa/sharedTask2024/}{arai.ksaa.gov.sa/sharedTask}} is a part of the ArabicNLP \footnote{\href{https://arabicnlp2024.sigarab.org/}{arabicnlp2024.sigarab.org}} conference for 2024, and it aims to advance the field of Arabic natural language processing by providing a platform for researchers to collaborate and innovate. 
+
+This task specifically targets the development of reverse dictionary models capable of predicting words from their definitions in Arabic. Participants are provided with a dataset containing 39k instances, and consisting of word-gloss pairs and corresponding word embeddings, challenging them to build models that can accurately predict the target words based on the provided glosses.
+
+We particpated in this task, and the proposed solution is based on the dataset provided by the organizers. The aim is to ourperform the baseline, and generate new features on the given dataset. Our solution will be submitted to the shared task for evaluation, and a system design paper will be submitted to the conference, based on this report.
 
 \newpage
 
@@ -301,7 +313,7 @@ On the same task another attempt by Qaddoumi \cite{Qaddoumi2023}, a method is in
 
 Building on this, Sibaee et al. \cite{Sibaee2023} presently employs a SemiDecoder architecture combined with an SBERT encoder. This methodology excels in encoding word definitions into vectors using SBERT, followed by training with the SemiDecoder model. The approach leverages SBERT's proficiency in capturing semantic similarity and the SemiDecoder's training efficiency, leading to a high ranking in the shared task.
 
-Other languages received more extensive research in the area of RDs. Mane et al. \cite{Mane2022} proposed a unique approach to reverse dictionaries with mT5, aiming at Indian languages support, where mT5 was employed for its ability to understand and generate language across multiple languages. It contrasts with BERT's Masked Language Modeling, focusing instead on translating and understanding user inputs to produce accurate word predictions.
+Other languages received more research in the area of RDs. Mane et al. \cite{Mane2022} proposed a unique approach to reverse dictionaries with mT5, aiming at Indian languages support, where mT5 was employed for its ability to understand and generate language across multiple languages. It contrasts with BERT's Masked Language Modeling, focusing instead on translating and understanding user inputs to produce accurate word predictions. The results showed that mT5 outperformed BERT-based models in the reverse dictionary task for both Indian languages and an English baseline.
 
 Ardoiz et al. \cite{Ardoiz2022}, in the SemEval RD task, studied the significance of high-quality lexicographic data in the efficiency of reversed dictionaries models. They suggest that refining the dataset by incorporating high-quality lexicographic data could significantly impact the task's outcomes, emphasizing the need for a robust dataset for optimal model performance. Their methodology involved a sentence-transformer model named “distiluse-base-multilingual-cased-v2”, which was trained to make the definition embeddings as similar as possible as the word gloss.
 On the other hand, Tran et al. 2022 in SemEval RD task, evaluates Transformer-based models enhanced with LST and BiLSTM layers for reverse dictionary across five languages, named English, Italian, Spanish, French and Russian, showcasing partial improvements over the CODWOE (COmparing Dictionaries and WOrd Embeddings) competition's baseline. It explores monolingual, multilingual, and zero-shot cross-lingual settings, providing insights into the viability of cross-lingual methodologies.
@@ -330,7 +342,7 @@ Finally, covering monolingual English RD, Pilehvar et al. 2019 \cite{Pilehvar201
         \hline
         Sibaee et al. \cite{Sibaee2023} & 2023 & Arabic & KSAA Shared Task 2023 RD dataset & SemiDecoder architecture with SBERT encoder & High ranking in shared task \\
         \hline
-        Mane et al. \cite{Mane2022} & 2022 & Indian & Hindi and Marathi WordNet, and English dictionary deﬁnition by Hill et al. \cite{Hill2016} & mT5 pretrained model & Focus on translating and understanding user inputs \\
+        Mane et al. \cite{Mane2022} & 2022 & Indian & Hindi and Marathi WordNet, and English dictionary deﬁnition by Hill et al. \cite{Hill2016} & T5/mT5 based models & T5/mT5 outperformed BERT-based models \\
         \hline
         Ardoiz et al. \cite{Ardoiz2022} & 2022 & English & Data from SemEval 2022 Task \footnote{\href{https://github.com/TimotheeMickus/codwoe/blob/main/data/README.md}{https://github.com/TimotheeMickus/codwoe/blob/main/data/README.md}} & Sentence-transformer model & Importance of high-quality lexicographic data \\
         \hline
@@ -346,8 +358,6 @@ Finally, covering monolingual English RD, Pilehvar et al. 2019 \cite{Pilehvar201
         \hline
         Pilehvar et al. \cite{Pilehvar2019} & 2019 & English & Reverse dictionary & Multi-sense embeddings for multi-sense words & Improved performance on English RD \\
         \hline
-        Hedderich et al. \cite{Hedderich2019} & 2019 & English & Reverse dictionary & Multi-sense embeddings for multi-sense words & Improved performance on English RD \\
-        \hline
     \end{tabularx}
 \end{sidewaystable}
 
@@ -360,6 +370,8 @@ Reading into the topic from literature proposed some questions:
 \end{enumerate}
 
 Moreover, Arabic RDs are not well discovered and researched for the Arabic language, which is evident by the fact that only few articles have explored it very recently in the literature. Our contribution in this domain will explore and attempt to answer both questions presented earlier.
+
+At the end of this report, we will present the results of our experiments and discuss the findings, to determine wether the research question have been fullfilled, and if not, what are the limitations and future work that can be done to improve the results.
 
 \newpage
 
@@ -642,7 +654,7 @@ To further enhance the model's performance, we propose the following:
 
 \newpage
 
-\section*{Conclusion}
+\section{Conclusion}
 
 This report presents a comprehensive overview of the Arabic Reverse Dictionary task, detailing the dataset, methodology, and results of our model. The proposed solution leverages a pre-trained mT5 model for word embedding retrieval, with the goal of surpassing the baseline performance on the cosine similarity metric. The model is trained on augmented examples generated from the Arabic Wikipedia dataset, aiming to enrich the glosses with additional context for improved performance.
 
