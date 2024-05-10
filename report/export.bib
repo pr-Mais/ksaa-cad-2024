@@ -40,6 +40,50 @@
   url      = {http://arxiv.org/abs/1512.03385},
   year     = {2015}
 }
+@inproceedings{inoue2021,
+  title     = {The Interplay of Variant, Size, and Task Type in {A}rabic Pre-trained Language Models},
+  author    = {Inoue, Go  and
+               Alhafni, Bashar  and
+               Baimukan, Nurpeiis  and
+               Bouamor, Houda  and
+               Habash, Nizar},
+  booktitle = {Proceedings of the Sixth Arabic Natural Language Processing Workshop},
+  month     = apr,
+  year      = {2021},
+  address   = {Kyiv, Ukraine (Online)},
+  publisher = {Association for Computational Linguistics},
+  abstract  = {In this paper, we explore the effects of language variants, data sizes, and fine-tuning task types in Arabic pre-trained language models. To do so, we build three pre-trained language models across three variants of Arabic: Modern Standard Arabic (MSA), dialectal Arabic, and classical Arabic, in addition to a fourth language model which is pre-trained on a mix of the three. We also examine the importance of pre-training data size by building additional models that are pre-trained on a scaled-down set of the MSA variant. We compare our different models to each other, as well as to eight publicly available models by fine-tuning them on five NLP tasks spanning 12 datasets. Our results suggest that the variant proximity of pre-training data to fine-tuning data is more important than the pre-training data size. We exploit this insight in defining an optimized system selection model for the studied tasks.}
+}
+@article{Antoun2020-araBERT,
+  abstract = {The Arabic language is a morphologically rich language with relatively few resources and a less explored syntax compared to English. Given these limitations, Arabic Natural Language Processing (NLP) tasks like Sentiment Analysis (SA), Named Entity Recognition (NER), and Question Answering (QA), have proven to be very challenging to tackle. Recently, with the surge of transformers based models, language-specific BERT based models have proven to be very efficient at language understanding, provided they are pre-trained on a very large corpus. Such models were able to set new standards and achieve state-of-the-art results for most NLP tasks. In this paper, we pre-trained BERT specifically for the Arabic language in the pursuit of achieving the same success that BERT did for the English language. The performance of AraBERT is compared to multilingual BERT from Google and other state-of-the-art approaches. The results showed that the newly developed AraBERT achieved state-of-the-art performance on most tested Arabic NLP tasks. The pretrained araBERT models are publicly available on https://github.com/aub-mind/arabert hoping to encourage research and applications for Arabic NLP.},
+  author   = {Wissam Antoun and Fady Baly and Hazem Hajj},
+  month    = {2},
+  title    = {AraBERT: Transformer-based Model for Arabic Language Understanding},
+  url      = {http://arxiv.org/abs/2003.00104},
+  year     = {2020}
+}
+@article{Antoun2020-araELECTRA,
+  abstract = {Advances in English language representation enabled a more sample-efficient pre-training task by Efficiently Learning an Encoder that Classifies Token Replacements Accurately (ELECTRA). Which, instead of training a model to recover masked tokens, it trains a discriminator model to distinguish true input tokens from corrupted tokens that were replaced by a generator network. On the other hand, current Arabic language representation approaches rely only on pretraining via masked language modeling. In this paper, we develop an Arabic language representation model, which we name AraELECTRA. Our model is pretrained using the replaced token detection objective on large Arabic text corpora. We evaluate our model on multiple Arabic NLP tasks, including reading comprehension, sentiment analysis, and named-entity recognition and we show that AraELECTRA outperforms current state-of-the-art Arabic language representation models, given the same pretraining data and with even a smaller model size.},
+  author   = {Wissam Antoun and Fady Baly and Hazem Hajj},
+  month    = {12},
+  title    = {AraELECTRA: Pre-Training Text Discriminators for Arabic Language Understanding},
+  url      = {http://arxiv.org/abs/2012.15516},
+  year     = {2020}
+}
+@inproceedings{Linting2021,
+  abstract  = {The recent ``Text-to-Text Transfer Transformer'' (T5) leveraged a unified text-to-text format and scale to attain state-of-the-art results on a wide variety of English-language NLP tasks. In this paper, we introduce mT5, a multilingual variant of T5 that was pre-trained on a new Common Crawl-based dataset covering 101 languages. We detail the design and modified training of mT5 and demonstrate its state-of-the-art performance on many multilingual benchmarks. We also describe a simple technique to prevent ``accidental translation'' in the zero-shot setting, where a generative model chooses to (partially) translate its prediction into the wrong language. All of the code and model checkpoints used in this work are publicly available.},
+  author    = {Linting Xue and Noah Constant and Adam Roberts and Mihir Kale and Rami Al-Rfou and Aditya Siddhant and Aditya Barua and Colin Raffel},
+  city      = {Online},
+  doi       = {10.18653/v1/2021.naacl-main.41},
+  editor    = {Kristina Toutanova and Anna Rumshisky and Luke Zettlemoyer and Dilek Hakkani-Tur and Iz Beltagy and Steven Bethard and Ryan Cotterell and Tanmoy Chakraborty and Yichao Zhou},
+  journal   = {Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies},
+  month     = {6},
+  pages     = {483-498},
+  publisher = {Association for Computational Linguistics},
+  title     = {mT5: A Massively Multilingual Pre-trained Text-to-Text Transformer},
+  url       = {https://aclanthology.org/2021.naacl-main.41},
+  year      = {2021}
+}
 @article{Nagoudi2021,
   abstract = {Transfer learning with a unified Transformer framework (T5) that converts all language problems into a text-to-text format was recently proposed as a simple and effective transfer learning approach. Although a multilingual version of the T5 model (mT5) was also introduced, it is not clear how well it can fare on non-English tasks involving diverse data. To investigate this question, we apply mT5 on a language with a wide variety of dialects--Arabic. For evaluation, we introduce a novel benchmark for ARabic language GENeration (ARGEN), covering seven important tasks. For model comparison, we pre-train three powerful Arabic T5-style models and evaluate them on ARGEN. Although pre-trained with ~49 less data, our new models perform significantly better than mT5 on all ARGEN tasks (in 52 out of 59 test sets) and set several new SOTAs. Our models also establish new SOTA on the recently-proposed, large Arabic language understanding evaluation benchmark ARLUE (Abdul-Mageed et al., 2021). Our new models are publicly available. We also link to ARGEN datasets through our repository: https://github.com/UBC-NLP/araT5.},
   author   = {El Moatez Billah Nagoudi and AbdelRahim Elmadany and Muhammad Abdul-Mageed},

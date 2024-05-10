@@ -1,10 +1,12 @@
-\documentclass[15pt]{article}
-\linespread{1.6}
-\renewcommand{\normalsize}{\fontsize{12pt}{10}\selectfont}  
+\documentclass[12.5pt]{article}
+\linespread{1.65}
+\renewcommand{\normalsize}{\fontsize{13pt}{10.5}\selectfont}  
 \setlength{\parindent}{0pt}
-
+\addtolength{\footnotesep}{1.5mm}
 % Packages
 \usepackage[utf8]{inputenc}
+\usepackage{titlesec}
+\usepackage{ragged2e}
 \usepackage{multicol}
 \usepackage{geometry}
 \usepackage{times}
@@ -37,6 +39,14 @@
 \setcode{utf8}
 \title{College of Computer and Information Sciences}
 \author{Mais Alharaki}
+
+\titleformat*{\section}{\LARGE\bfseries}
+\titleformat*{\subsection}{\Large\bfseries}
+\titleformat*{\subsubsection}{\Large\bfseries}
+\titleformat*{\paragraph}{\large\bfseries}
+\titleformat*{\subparagraph}{\large\bfseries}
+
+\newcolumntype{L}[1]{>{\hsize=#1\hsize\RaggedRight} X}
 
 % Turn on the style
 \pagestyle{fancy}
@@ -291,7 +301,11 @@ In machine learning, reverse dictionaries aid in feature engineering, enriching 
 
 Furthermore, reverse dictionaries streamline text summarization and topic modeling \cite{Griffiths2004}, assisting in distilling essential information from large text volumes. They also play a crucial role in improving chatbot and customer service automation by accurately interpreting user queries and intents.
 
-\subsection{ArabicNLP 2024 Shared Task}
+\subsection{Embedding-based retrieval}
+
+Embedding-based retrieval is a technique that leverages word embeddings to retrieve relevant information from a dataset. By representing words as numerical vectors in a high-dimensional space, embedding-based retrieval models can efficiently search for semantically similar words or phrases. This approach is particularly useful for reverse dictionaries, where the goal is to predict words based on their descriptions or meanings.
+
+\subsection{ArabicNLP 2024 Shared Task}\label{sec:arabicnlp}
 
 The KSAA-CAD Shared Task\footnote{The new task has been launched in May this year, more information can be found here: \href{https://arai.ksaa.gov.sa/sharedTask2024/}{arai.ksaa.gov.sa/sharedTask}} is a part of the ArabicNLP \footnote{\href{https://arabicnlp2024.sigarab.org/}{arabicnlp2024.sigarab.org}} conference for 2024, and it aims to advance the field of Arabic natural language processing by providing a platform for researchers to collaborate and innovate. 
 
@@ -331,8 +345,9 @@ Finally, covering monolingual English RD, Pilehvar et al. 2019 \cite{Pilehvar201
 \begin{sidewaystable}
     \centering
     \caption{Summary of recent research on Reverse Dictionaries}
-     \renewcommand{\arraystretch}{1.5}
-    \begin{tabularx}{\textwidth}{|l|c|X|X|X|X|}
+    \small
+    \renewcommand{\arraystretch}{1.75}
+    \begin{tabularx}{\textwidth}{|l|c|L{0.4}|L{1}|L{1.4}|L{1.2}|}
         \hline
         \textbf{Author} & \textbf{Year} &  \textbf{Language} & \textbf{Dataset} & \textbf{Methodology} & \textbf{Results} \\
         \hline
@@ -377,13 +392,14 @@ At the end of this report, we will present the results of our experiments and di
 
 \section{Methodology and proposed solution}
 
-Most recent studies on reversed dictionaries have utilized pretrained models, as seen in the literature. Moreover, all studies on Arabic reversed dictionaries used BERT and its variations. Consequently, the potential for exploring other architectures and pretrained models remain intact. 
-In this section, we go more in depth into the proposed solution, starting with understanding the dataset and task at hand, the methods used to expand the dataset with relevant context, and finally the model architecture and evaluation results.
+Most recent studies on reverse dictionaries have utilized pretrained models, as seen in the literature. Moreover, all studies on Arabic reverse dictionaries used BERT and its variations. Consequently, the potential for exploring other architectures and pre-trained models for the Arabic language remains intact. 
+
+In this section, we go more in depth into the proposed solution, starting with understanding the dataset and task at hand, the methods used to enrich the dataset with relevant context, and finally the model architecture and evaluation results.
 
 Briefly:
 \begin{enumerate}
     \item The Shared Task dataset contains 39k instances with its splits ready for experimentation.
-    \item The first part of the pipeline concerns generating contextually close examples for each word:gloss pairs in the dataset. The goal is to enrich the context of each word's meaning in the dictionary.
+    \item The first part of the pipeline concerns generating contextually close examples for each word:gloss pairs in the dataset. In other words, creating a new feature that puts the lexical word into an example use. The goal is to enrich the context of each word's meaning in the dictionary.
     \item The inputs are then tokenized and encoded using SentencePiece tokenizer to prepare for training.
     \item A T5 model is trained to predict the word embeddings. The architecture leverages sequence to sequence language modeling, an architecture that hasn’t been explored for Arabic RD in the literature.
     \item Finally, results are evaluated using Mean Squared Error and Cosine similarity, and compared with the baseline.
@@ -391,9 +407,15 @@ Briefly:
 
 \subsection{Data description}
 
+The dataset of choice for this project is an Arabic dictionary dataset containing \textbf{39,214 entries}, cleaned and ready for research, collected from various Arabic dictionaries. The dataset isn't available publicly, and have been obtained as a result of participating in the ArabicNLP Shared Task for Reverse Dictionaries, as explained previously in section \ref{sec:arabicnlp}. We quote the dataset description from the Shared Task organizers:
+
+\begin{quote}
+    The first of these is the "Contemporary Arabic Language Dictionary" by Ahmed Mokhtar Omar (Omar, 2008), a resource previously utilized in the first iteration KSAA-RD. The second is the newly released dictionary of the Arabic contemporary language "Mu'jam Arriyadh" (Altamimi et al., 2023). The third is the "Al Wassit LMF Arabic Dictionary" (Namly, 2015). These dictionaries comprise words, commonly referred to as lemmas, and these may come with glosses, part of speech (POS), and examples.
+\end{quote}
+
 \begin{table}[H]
     \centering
-    \caption{Dataset splits}
+    \caption{Dataset splits as provided by the Shared Task organizers}
     \label{table:dataset-splits}
     \renewcommand{\arraystretch}{1.5}%
     \begin{tabularx}{\textwidth}{|X|X|X|}
@@ -405,7 +427,7 @@ Briefly:
     \end{tabularx}
 \end{table}
 
-The dataset used is an Arabic dictionary containing 39,214 entries, splitted into train, validation and test sets, as seen in Table \ref{table:dataset-splits}, with 6 features named: word, gloss, pos, electra, bertseg, bertmsa, described in Table \ref{table:dataset-desc}. The dataset was provided to the participants in the Shared Task and is not publicly available.
+The dataset is already splitted into train, validation and test sets, as seen in Table \ref{table:dataset-splits}, with 6 features named: word, gloss, pos, electra, bertseg, bertmsa, described in Table \ref{table:dataset-desc}.
 
 \begin{table}[H]
     \centering
@@ -435,11 +457,12 @@ The dataset used is an Arabic dictionary containing 39,214 entries, splitted int
     \item A \textbf{word} is an entry in the dictionary, or a lemma.
     \item A \textbf{gloss} is the definition or meaning for this word based on its part of speech.
     \item A \textbf{pos} stands for Part-of-Speech, which is a grammatical tag assigned to words in NLP, and might include one of the following: noun, verb, adjective.
-    \item The last 3 features represent the embeddings, each embedding corresponds to the representation of the word in a high dimensional space using a set of pretrained models, employing AraELECTRA (Antoun et al., 2021), AraBERTv2 (Antoun et al., 2020), and camelBERT-MSA (Inoue et al., 2021), respectively referred to as electra, bertseg, and bertmsa.
-    \item In the previous table, the word \<عين> is a noun which means “The organ of vision in a living organism”, its part-of-speech is “Noun”, and is represented with 3 different word embeddings.
+    \item The final 3 values represent our targets, each of them corresponding to a representation of the word in a multi-dimensional space using a set of different pretrained models, employing AraELECTRA \cite{Antoun2020-araELECTRA}, AraBERTv2 \cite{Antoun2020-araBERT}, and camelBERT-MSA \cite{inoue2021}, respectively referred to as \textbf{electra}, \textbf{bertseg}, and \textbf{bertmsa}.
 \end{enumerate}
 
-\subsection{Data expansion}
+In the previous table, the word \<عين> is a noun which means “The organ of vision in a living organism”, its part-of-speech is “Noun”, and is represented with 3 different word embeddings.
+
+\subsection{New feature generation}
 
 As noticed while performing data exploration, the glosses are usually short and formal descriptions written by expert linguists. In Table \ref{table:word-gloss}, we notice that some glosses are short and concise, making its usage unclear, and results in a vague understanding of the word.
 
@@ -459,45 +482,62 @@ As noticed while performing data exploration, the glosses are usually short and 
     \end{tabularx}
 \end{table}
 
-Average users are unlikely to provide such precise descriptions, on the contrary, user queries might lack any key words that could identify the target word or set of words. Therefore, and inspired by our ability to perceive and understand new vocabulary from context \cite{killian1995}, we propose that in order to enhance the model’s ability to learn words from user queries, the model should be trained on usage examples that put the words into context.
+Average users are unlikely to provide such precise descriptions, on the contrary, user queries might lack any key words that could identify the target word or set of words. Humans from a young age are capable to understand new words from a sentence \cite{killian1995}. Therefore, and inspired by that ability, we propose that in order to enhance the model’s ability to align words and descriptions from user queries, we need to provide the model with more contextually relevant examples for each word-gloss pair.
 
-The manual curation of contextually relevant examples is a laborious and resource-demanding task, which, given the short time frame of this experiment, is not a feasible solution, hence the need to find an automatic way to curate examples from publicly available Arabic datasets. 
+The manual curation of contextually relevant examples is a laborious and resource-demanding task, which, given the short time frame of this experiment, is not a feasible solution, hence the need to find an automatic way to curate examples from publicly available Arabic datasets.
 
-The datThe dataset of choice is the Arabic wikipedia embeddings from the Embedding Archives project by CohereAI, which contains 3.1 million entries from Wikipedia, each entry containing a text, and the embedding of that text (or embedding), alongside other metadata. Text embeddings in the dataset are achieved through CohereAI's multilingual-22-12 semantic embeddings model, trained for multilingual comprehension encompassing 101 languages including Arabic. This closed-source model is accessible via Cohere's API (Kamalloo2023).
-aset of choice is the Arabic wikipedia embeddings from the Embedding Archives project by CohereAI, which contains 3.1 million entries from Wikipedia, each entry containing a text, and the embedding of that text (or embedding), alongside other metadata. Text embeddings in the dataset are achieved through CohereAI's multilingual-22-12 semantic embeddings model, trained for multilingual comprehension encompassing 101 languages including Arabic. This closed-source model is accessible via Cohere's API \cite{Kamalloo2023}.
+We chose the Arabic wikipedia embeddings dataset from the Embedding Archives project by CohereAI, which contains 3.1 million entries from Wikipedia, each entry containing a text, and the embedding of that text, alongside other metadata. Text embeddings in the dataset are achieved through CohereAI's \textit{multilingual-22-12} semantic embeddings model, trained for multilingual comprehension encompassing 101 languages including Arabic. This closed-source model is accessible via Cohere's API \cite{Kamalloo2023}.
 
-To curate a number of examples for each word, we use a semantic similarity approach by embedding the word and gloss using multilingual-22-12 model, and running a vector search using cosine similarity, to look for the top 5 closest entries from Wikipedia to the given dictionary gloss. As observed in Table \ref{table:word-gloss}, the example may not directly contain the dictionary entry, but the surrounding context establishes a clear semantic relationship with the word's meaning.
+To curate a number of new examples for each word in our dataset, we use a semantic similarity approach by embedding the word and gloss using \textit{multilingual-22-12} model, which is the same model that was used to embed Wikipedia text, then perform a vector similarity search using cosine similarity, to look for the top 5 closest entries from Wikipedia to the given word:gloss pairs. Figure \ref{fig:examples-generation} illustrates the process of generating examples for a \textit{word:gloss} pair.
+
+\begin{figure}[H]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.6\textwidth]{examples-generation.png}
+    \caption{The process of generating a single example for a word:gloss pair}
+    \label{fig:examples-generation}
+\end{figure}
+
+Table \ref{table:word-gloss} demonstrates an instance of the dataset with the new \textbf{example} feature, and as can be noticed, the feature may not directly contain the dictionary lemma \<كذاب>, but the surrounding context establishes a clear semantic relationship with the word's meaning.
 
 \begin{table}[H]
     \centering
-    \caption{A word with its gloss and 2 examples from Wikipedia}
+    \caption{A word with its gloss and newly added \textbf{examples} feature}
     \label{table:word-gloss}
     \renewcommand{\arraystretch}{1.5}%
-    \begin{tabularx}{\textwidth}{|>{\centering}c|>{\centering\arraybackslash}X|X|}
+    \begin{tabularx}{\textwidth}{|c|>{\centering\arraybackslash}c|>{\centering\arraybackslash}X|}
         \hline
-        \textbf{Word} & \textbf{Gloss} & \textbf{Examples from Wikipedia} \\
+        \textbf{Word} & \textbf{Gloss} & \textbf{Examples} \\
         \hline
-        \RL{كذاب} & \RL{صيغة مبالغة من كذَبَ كذَبَ على: كثير الكذب} & \multicolumn{1}{>{\centering}X|}{\RL{وردت لفظ الكذب ومشتقاتها في القرآن الكريم في مواضع متعددة وبصيغ متعددة.، ووردت بعدد (251) موضعًا، على (6) أوجه}\newline\RL{وهو أسوء أنواع الجهل، وهو الاِعْتِقَادُ الجَازِمُ بِمَا لاَ يَتَّفِقُ مَعَ الحَقِيقَةِ، إِذْ يَعْتَقِدُ الْمَرْءُ عَاِرفاً عِلْماً وَهُوَ عَكْسُ ذَلِكَ. وهو تعبيرٌ أُطلِقَ على من لا يسلِّم بجهله، ويدَّعى ما لا يعلم}} \\
+        \RL{كذاب} & \RL{صيغة مبالغة من كذَبَ على: كثير الكذب} & {\RL{وردت لفظ الكذب ومشتقاتها في القرآن الكريم في مواضع متعددة وبصيغ متعددة.، ووردت بعدد (251) موضعًا، على (6) أوجه}\newline\RL{وهو أسوء أنواع الجهل، وهو الاِعْتِقَادُ الجَازِمُ بِمَا لاَ يَتَّفِقُ مَعَ الحَقِيقَةِ، إِذْ يَعْتَقِدُ الْمَرْءُ عَاِرفاً عِلْماً وَهُوَ عَكْسُ ذَلِكَ. وهو تعبيرٌ أُطلِقَ على من لا يسلِّم بجهله، ويدَّعى ما لا يعلم}} \\
         \hline
     \end{tabularx}
 \end{table}
 
+\newpage
+
 \subsection{Modeling}
 
-This section details the modeling approach employed to construct an Arabic RD retrieval system. The primary objective is to surpass the performance of the 2024 RD Shared Task baseline on the cosine similarity metric. We plan to achieve this objective through a retrieval framework that leverages word embeddings and cosine similarity measures for efficient retrieval of words based on its glosses. The pretrained mT5 model is used, which is a transformer model built on sequence to sequence language modeling approach.
+This section goes through the modeling pipeline and the proposed architecture for the Arabic Reverse Dictionary. The primary objective is to surpass the performance of the 2024 RD Shared Task baseline on the cosine similarity metric. 
 
-\subsubsection{Data preprocessing}
+We plan to achieve this objective by utilizing a retrieval framework that leverages 3 different word embeddings and cosine similarity measures for efficient retrieval of words based on its glosses. The end goal is to achieve a high alignment between the glosses and the words.
 
-For machines to understand textual data, it must be preprocessed to represent it numerically. Fortunately, the dataset at hand is mostly clean and ready to be used, requiring only the tokenization step before training.
+The methodolgy leverages transfer learning, where a pre-trained language model model is fine-tuned on the dataset to closely align glosses to words in the same multi-dimensional space. The words are already represented using the electra, bertseg, and bertmsa embeddings, which are considered as 3 independent targets in 3 different spaces.
 
-Data preprocessing can be summarized into two main steps:
+The model architecture is based on the mT5 model \cite{Linting2021}, a variant of the T5 model \cite{Raffel2019}, which is a text-to-text transformer model. The mT5 model is pre-trained on a large corpus of multilingual text data, making it suitable for handling diverse languages, including Arabic.
+
+\subsubsection{Data pre-processing}
+
+For machines to understand textual data, it must be preprocessed to represent it numerically. Fortunately, the dataset at hand is mostly clean and ready to be used, requiring only a \textbf{tokenization} step before training.
+
+Data pre-processing pipeline can be summarized into two main steps:
 
 \begin{enumerate}
-    \item \textbf{Text Augmentation:} The dataset is augmented by merging the gloss and its corresponding top two examples into a single text string that serves as the input for the model. This step enriches the training data and provides the model with additional context.
-    \item \textbf{Tokenization:} The augmented text is tokenized using the mT5 tokenizer. This tokenizer leverages SentencePiece, a subword-level tokenization algorithm trained on the original corpora used to train the mT5 model.
+    \item \textbf{Text Augmentation:} The dataset is augmented by merging the gloss and its corresponding top two examples, into a single text string that represents the input to the model. This step enriches the training data and provides the model with additional context.
+    \item \textbf{Tokenization:} The input is then tokenized using the SentencePiece tokenizer, a pre-trained subword-level tokenization algorithm. This tokenizer is specifically trained for the mT5 model and is capable of handling multiple languages, including Arabic.
 \end{enumerate}
 
-Figure \ref{fig:tokenized-sentence} visualizes the result of tokenizing an Arabic sentence from the dataset, using mT5 pre-trained tokenizer.
+Figure \ref{fig:tokenized-sentence} visualizes the result of tokenizing an Arabic sentence from the dataset, using our pre-trained tokenizer.
 
 \begin{figure}[H]
     \centering
@@ -539,23 +579,17 @@ Finally, the pre-trained models employed for the encoder part are mT5 Base and A
 
 \subsection{Environment setup}
 
-This subsection details the software environment and hardware specifications used for example generation, model development, and experimentation. Primarily, the technical stack leverages Python and Google Colab for development.
+This subsection details the software environment and hardware specifications used for feature engineering, model development, and experimentation. Primarily, the technical stack leverages Python and Google Colab for development.
 
-For example generation, we utilized Postgres engine for SQL with the pgvector extension. This extension enables efficient storage and querying of vectors based on cosine similarity. Additionally, the HNSW (Hierarchical Navigable Small World) algorithm is used for indexing, facilitating fast and accurate nearest neighbor searches within the high-dimensional vector space.
+For feature engineering, we utilized Postgres engine for SQL with the pgvector extension. This extension enables efficient storage of vector type data, and allow fast and efficient querying based on cosine similarity and other similarity measures. Additionally, the HNSW (Hierarchical Navigable Small World) algorithm is used for indexing, facilitating fast and accurate nearest neighbor searches within the high-dimensional vector space.
 
-Model development was conducted within a Google Colab environment equipped with a single A100 GPU and 12 GB RAM. The chosen framework for this task was PyTorch, which is specifically designed for deep learning. Additionally, few other libraries were employed, notably the Hugging Face Transformers for loading and training of pre-trained models with the transformer architecture.
+Model development was conducted within a Google Colab environment equipped with a single A100 GPU and 12 GB RAM. The chosen framework for this task was PyTorch, which is specifically designed for deep learning. Additionally, few other libraries were employed, notably the Hugging Face Transformers for loading pre-trained models with transformer architecture.
 
-\subsection{Data expansion analysis}
+\subsection{Feature engneering analysis}
 
-To generate an example for a single entry in the dataset, we first merge the word and its gloss. In Figure \ref{fig:examples-generation}, the word is \<بَسْط> and what comes after it is the gloss, which forms the input sentence. Next, the input is transformed into an embedding using the multilingual-22-12 model API, which results in a vector of size 768, this ensures we’re projecting the input into the Wikipedia dataset space. The next step is to find the closest texts to our input in the space, which is achievable using cosine similarity, such that the closest embedding to the input is the example we’re looking for.
+To generate a new feature representing a contextual example for a single entry in the dataset, we first merge the word and its gloss. As seen in Figure \ref{fig:examples-generation}, the word is \<بَسْط> and what comes after it is the gloss, which forms the input sentence. Next, the input is transformed into an embedding using the \textit{multilingual-22-12} model API, which results in a vector of size 768, this ensures we’re projecting the input into the Wikipedia dataset space. The next step is to find the closest texts to our input in the shared space, which is achievable using cosine similarity.
 
-\begin{figure}[H]
-    \centering
-    \captionsetup{justification=centering}
-    \includegraphics[width=0.6\textwidth]{examples-generation.png}
-    \caption{The process of generating a single example for a word:gloss pair}
-    \label{fig:examples-generation}
-\end{figure}
+The process is repeated for each word:gloss pair in the dataset, generating a new feature named \textbf{examples}. The new feature is a list of strings, each string represents a contextually relevant example for the word:gloss pair. Table \ref{table:word-gloss} showcased an instance of the dataset with a newly added \textbf{examples} feature.
 
 While enriching the glosses with additional context demonstrates promise, it is not without limitations. Random sampling of the results reveals instances where the retrieved entries exhibit a weaker semantic connection to the dictionary entry. Consequently, human intervention remains necessary for data labeling and refinement to ensure better quality, potentially augmented by incorporating additional data sources to enrich the retrieval process.
 
