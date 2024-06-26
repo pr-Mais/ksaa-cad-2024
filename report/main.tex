@@ -176,14 +176,13 @@ Date: \underline{2 May 2024}
 
 \section*{Abstract}
 
-The domain of reverse dictionaries, while advancing in languages like English and Chinese, remains underdeveloped for less Arabic. This study attempts to explore a data-driven approach to enhance word retrieval processes in Arabic RDs. The research focuses on the ArabicNLP 2024 Shared Task, named KSAA-CAD, which provides a dictionary dataset of 39,214 word-gloss pairs, each with a corresponding target word embedding. The proposed solution aims to surpass the baseline performance by employing state-of-the-art deep learning models and innovative data augmentation techniques. The methodology involves enriching the dataset with contextually relevant examples, training a T5 model to align the words to their glosses in the space, and evaluating the results using Mean Squared Error and Cosine similarity. We find that our model is closely aligned with the baseline performance on bertseg and bertmsa targets, however does not perform well on electra target, suggesting the need for further exploration of data augmentation techniques and model architectures to enhance Arabic RDs. The findings of this study contribute to the ongoing research in Arabic NLP and reverse dictionaries, providing insights into the challenges and opportunities in this domain.
+The domain of reverse dictionaries, while advancing in languages like English and Chinese, remains underdeveloped for Arabic. This study attempts to explore a data-driven approach to enhance word retrieval processes in Arabic RDs. The research focuses on the ArabicNLP 2024 Shared Task, named KSAA-CAD, which provides a dictionary dataset of 39,214 word-gloss pairs, each with a corresponding target word embedding. The proposed solution aims to surpass the baseline performance by employing state-of-the-art deep learning models and innovative data augmentation techniques. The methodology involves enriching the dataset with contextually relevant examples, training a T5 model to align the words to their glosses in the space, and evaluating the results using Mean Squared Error and Cosine similarity. We find that our model is closely aligned with the baseline performance on bertseg and bertmsa targets, however does not perform well on electra target, suggesting the need for further exploration of data augmentation techniques and model architectures to enhance Arabic RDs. The findings of this study contribute to the ongoing research in Arabic NLP and reverse dictionaries, providing insights into the challenges and opportunities in this domain.
 
 \newpage
 
 \section{Introduction}
 
-While reverse dictionaries have witnessed advancements in languages like English and Chinese (e.g. WantWords \cite{Qi2020}), they remain less developed and explored for Arabic. This gap is particularly concerning for a language with a rich linguistic heritage and widespread use. The only ongoing effort in this domain is the 1st Arabic RD shared task launched in 2023 by King Salman Global Academy for Arabic Language (KSAA)\footnote{\url{https://arai.ksaa.gov.sa/sharedTask/}}.
-
+While reverse dictionaries have witnessed advancements in languages like English and Chinese (e.g. WantWords \cite{Qi2020}), they remain less developed and explored for Arabic. This gap is particularly concerning for a language with a rich linguistic heritage and widespread use. The only ongoing effort in this domain is the 1st Arabic RD shared task launched in 2023 by King Salman Global Academy for Arabic Language (KSAA)\footnote{\url{https://arai.ksaa.gov.sa/sharedTask/}}, and the recent KSAA-CAD (Contemporary Arabic Dictionary) Shared Task for 2024\footnote{\url{https://arai.ksaa.gov.sa/sharedTask2024/}}.
 
 \subsection{Content of study}
 
@@ -287,9 +286,11 @@ Tokenization is the process of breaking down text data into smaller units suitab
 
 Text embeddings represent the tokens as numerical vectors in a high-dimensional space, where words with similar meanings tend to be positioned closer together. Popular techniques for text embedding include Word2Vec and GloVe, which learn these representations by analyzing large text corpora, meaning a large set of texts (usually in electronic format) which is considered to be representative of a language.
 
-In the case of deep learning models, text embeddings are often learned as part of the training process, and is often the result of the encoder part of a language model, where the input text is transformed into a fixed-length vector representation.
+Word2Vec is a popular word embedding technique that learns distributed representations of words in a continuous vector space. It captures the semantic relationships between words by training a shallow neural network on a large text corpus. Word2Vec can be used to generate word embeddings for a given text corpus, enabling the model to understand the context and meaning of words.
 
-% Talk about Glove and Word2Vec
+GloVe (Global Vectors for Word Representation) is another word embedding technique that learns word vectors by factorizing the word-word co-occurrence matrix. It captures the global word co-occurrence statistics in a corpus, allowing it to generate word embeddings that reflect the semantic relationships between words.
+
+In the case of deep learning models, text embeddings are often learned as part of the training process, and is often the result of the encoder part of a language model, where the input text is transformed into a fixed-length vector representation. This representation is then used by the decoder to generate the output sequence.
 
 \subsubsection{SentencePiece tokenizer}
 
@@ -414,6 +415,14 @@ At the end of this report, we will present the results of our experiments and di
 
 \section{Methodology and proposed solution}
 
+\begin{figure}
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=\textwidth]{methodology.png}
+    \caption{The methodology pipeline of this study}
+    \label{fig:methodology}
+\end{figure}
+
 Most recent studies on reverse dictionaries have utilized pretrained models, as seen in the literature. Moreover, all studies on Arabic reverse dictionaries used BERT and its variations. Consequently, the potential for exploring other architectures and pre-trained models for the Arabic language remains intact. 
 
 In this section, we go more in depth into the proposed solution, starting with understanding the dataset and task at hand, the methods used to enrich the dataset with relevant context, and finally the model architecture and evaluation results.
@@ -427,11 +436,11 @@ Briefly:
     \item Finally, results are evaluated using Mean Squared Error and Cosine similarity, and compared with the baseline.
 \end{enumerate}
 
-% TODO create a figure showing the whole methodology pipeline
+Figure \ref{fig:methodology} illustrates the methodology followed in this study.
 
 \subsection{Data description}
 
-The KSAA-CAD dataset is an Arabic dictionary dataset containing \textbf{39,214 entries}, cleaned and ready for research, collected from various Arabic dictionaries. It isn't available publicly, and have been obtained as a result of participating in the ArabicNLP Shared Task for Reverse Dictionaries, as explained previously in section \ref{sec:arabicnlp}. We quote the dataset description from the Shared Task organizers:
+The KSAA-CAD dataset is an Arabic dictionary dataset containing \textbf{39,214 entries}, cleaned and ready for research, collected from various Arabic dictionaries. It isn't available publicly, and have been obtained as a result of participating in the ArabicNLP Shared Task for Reverse Dictionaries, as explained previously in section \ref{sec:arabicnlp}. We quote the KSAA-CAD dataset description from the Shared Task organizers:
 
 \begin{quote}
     The first of these is the "Contemporary Arabic Language Dictionary" by Ahmed Mokhtar Omar (Omar, 2008), a resource previously utilized in the first iteration KSAA-RD. The second is the newly released dictionary of the Arabic contemporary language "Mu'jam Arriyadh" (Altamimi et al., 2023). The third is the "Al Wassit LMF Arabic Dictionary" (Namly, 2015). These dictionaries comprise words, commonly referred to as lemmas, and these may come with glosses, part of speech (POS), and examples.
@@ -439,7 +448,7 @@ The KSAA-CAD dataset is an Arabic dictionary dataset containing \textbf{39,214 e
 
 \begin{table}[H]
     \centering
-    \caption{Dataset splits as provided by the Shared Task organizers}
+    \caption{KSAA-CAD dataset splits as provided by the Shared Task organizers}
     \label{table:dataset-splits}
     \renewcommand{\arraystretch}{1.5}%
     \begin{tabularx}{\textwidth}{|X|X|X|}
@@ -522,7 +531,7 @@ To curate a number of new examples for each word in our dataset, we use a semant
     \label{fig:examples-generation}
 \end{figure}
 
-Table \ref{table:word-gloss} demonstrates an instance of the dataset with the new \textbf{example} feature, and as can be noticed, the feature may not directly contain the dictionary lemma \<كذاب>, but the surrounding context establishes a clear semantic relationship with the word's meaning.
+Table \ref{table:word-gloss} demonstrates an instance of the KSAA-CAD dataset with the new \textbf{example} feature, and as can be noticed, the feature may not directly contain the dictionary lemma \<كذاب>, but the surrounding context establishes a clear semantic relationship with the word's meaning.
 
 \begin{table}[H]
     \centering
@@ -540,18 +549,18 @@ Table \ref{table:word-gloss} demonstrates an instance of the dataset with the ne
 
 \subsubsection{Data pre-processing}
 
-For machines to understand textual data, it must be preprocessed to represent it numerically. Fortunately, the dataset at hand is mostly clean and ready to be used, requiring only a \textbf{tokenization} step before training.
+For machines to understand textual data, it must be preprocessed to represent it numerically. Fortunately, the KSAA-CAD dataset at hand is mostly clean and ready to be used, requiring only a \textbf{tokenization} step before training.
 
 Data pre-processing pipeline can be summarized into two main steps:
 
 \begin{enumerate}
-    \item \textbf{Combining the gloss with the examples:} The dataset is augmented by merging the gloss and its corresponding top two examples, into a single text string that represents the input to the model. This step enriches the training data and provides the model with additional context.
+    \item \textbf{Combining the gloss with the examples:} A new feature is added to the KSAA-CAD dataset by merging the gloss and its corresponding top two examples, into a single text string that represents the input to the model. This step enriches the training data and provides the model with additional context.
     \item \textbf{Tokenization:} The input is then tokenized using the SentencePiece tokenizer, a pre-trained subword-level tokenization algorithm. This tokenizer is specifically trained for the mT5 model and is capable of handling multiple languages, including Arabic.
 \end{enumerate}
 
 Figure \ref{fig:tokenized-sentence} visualizes the result of tokenizing an Arabic sentence from the dataset, using our pre-trained tokenizer.
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \captionsetup{justification=centering}
     \includegraphics[width=\textwidth]{tokenized-sentence.png}
@@ -571,19 +580,19 @@ The model architecture is based on the mT5 model \cite{Linting2021}, a variant o
 
 \subsubsection{Model architecture}
 
-The proposed model architecture leverages a pre-trained mT5 model as its foundation, particularly the encoder part of the model. The last hidden layer of the mT5 encoder contains the embedding information needed to represent the input sentence in the target words’ space. Figure \ref{fig:model-arch} illustrates the model architecture, which consists of an encoder, a pooling layer, and a linear layer.
+The proposed model architecture leverages a pre-trained mT5 model as its foundation, particularly the encoder part of the model. The last hidden layer of the T5 encoder contains the embedding information needed to represent the input sentence in the target words’ space. Figure \ref{fig:model-arch} illustrates our model architecture, which consists of an encoder, a pooling layer, and a linear layer.
 
-The input is a vector of size 256, which is the tokenized and encoded input sentence. The input is then passed through the mT5 encoder, which outputs a matrix of shape (batch size, sequence length, hidden size). The last hidden state of the encoder is then passed through a pooling layer to transform it into a vector of a fixed length of 718. Finally, the output of the pooling layer is passed through a linear layer that transforms it into the desired target shape, which is 256 for electra, 768 for bertseg, and 768 for bertmsa.
+The input is a vector of size 256, each value in the vector is an ID of a token in the vocabulary, which is the tokenized and encoded input sentence. The input is then passed through the mT5 encoder, which outputs a matrix of shape (batch size, sequence length, hidden size). The last hidden state of the encoder is then passed through a pooling layer to transform it into a vector of a fixed length of 718. Finally, the output of the pooling layer is passed through a linear layer that transforms it into the desired target shape, which is 256 for electra, 768 for bertseg, and 768 for bertmsa.
 
 \begin{figure}
     \centering
     \captionsetup{justification=centering}
-    \includegraphics[width=0.8\textwidth]{model-arch.png}
-    \caption{A sample sentence tokenized using the mT5 tokenizer}
+    \includegraphics[width=0.6\textwidth]{model-arch.png}
+    \caption{T5-based model architecture for Arabic RD. The input is a vector of size 256.}
     \label{fig:model-arch}
 \end{figure}
 
-The last hidden state of the mT5 encoder is not a vector, rather a matrix, thus we cannot use it directly as an input to the linear layer. To solve the problem, we introduced a pooling layer that transforms the hidden state matrix to a vector of a fixed length. This layer can be represented by equation \ref{eq:pooling}. This equation calculates a weighted sum of the last hidden states \(O\) where the weights are determined by the attention mask \(A\), normalized by the total weight (or count of non-zero entries in \(A\) for each sequence).
+The last hidden state of the T5 encoder is not a vector, rather a matrix, thus we cannot use it directly as an input to the linear layer. To solve the problem, we introduced a pooling layer that transforms the hidden state matrix to a vector of a fixed length. This layer can be represented by equation \ref{eq:pooling}. This equation calculates a weighted sum of the last hidden states \(O\) where the weights are determined by the attention mask \(A\), normalized by the total weight (or count of non-zero entries in \(A\) for each sequence).
 
 \begin{equation} \label{eq:pooling}
     pool = \frac{\sum_{j,k} (O_{ijk} \cdot A_{ijk})}{\sum_j A_{ij}}
@@ -617,33 +626,19 @@ While enriching the glosses with additional context demonstrates promise, it is 
 
 \subsection{Training}
 
-% 
-
 We used the training set which contains around 31k entries, to train a number of models. The Mean Square Error loss function is used to calculate the reconstruction loss, and Adam optimizer with a learning rate value of 3e-5 to optimize the weigths in the backward step, the LR has been obtained via trial and error. 
 
-The archeticture and foundation model is T5 \cite{Linting2021}, however there's various checkpoints fine-tuned from the pre-trained original mT5 model. Among these checkpoints, we chose \textbf{mT5-base} (pre-trained and published by Google and original authors) and \textbf{AraT5v2} \cite{Nagoudi2021} (fine-tuned from mT5-base on a large Arabic corpus). Subsequent experiments were conducted on these two models, with the aim of comparing their performance on the task.
+The archeticture and foundation model is T5 \cite{Linting2021}, however there's various checkpoints fine-tuned from the pre-trained original T5 model. Among these checkpoints, we chose \textbf{mT5-base} (pre-trained and published by Google and original authors) and \textbf{AraT5v2} \cite{Nagoudi2021} (fine-tuned from mT5-base on a large Arabic corpus). Subsequent experiments were conducted on these two models, with the aim of comparing their performance on the task.
 
-Briefly, the following experiments were conducted:
-\begin{enumerate}
-    \item \textbf{Glosses only as input}:
-    \begin{enumerate}
-        \item \textbf{mT5-base} fine-tuned to predict electra embeddings on the original training set.
-        \item \textbf{mT5-base} fine-tuned to predict bertseg embeddings on the original training set.
-        \item \textbf{mT5-base} fine-tuned to predict bertmsa embeddings on the original training set.
-        \item \textbf{AraT5v2} fine-tuned to predict electra embeddings with target size 256.
-        \item \textbf{AraT5v2} fine-tuned to predict bertseg embeddings with target size 768.
-        \item \textbf{AraT5v2} fine-tuned to predict bertmsa embeddings with target size 768.
-    \end{enumerate}
-    \item \textbf{Glosses merged with 2 examples as input}:
-    \begin{enumerate}
-        \item \textbf{mT5-base} fine-tuned to predict electra embeddings on the augmented training set.
-        \item \textbf{mT5-base} fine-tuned to predict bertseg embeddings on the augmented training set.
-        \item \textbf{mT5-base} fine-tuned to predict bertmsa embeddings on the augmented training set.
-        \item \textbf{AraT5v2} fine-tuned to predict electra embeddings with target size 256.
-        \item \textbf{AraT5v2} fine-tuned to predict bertseg embeddings with target size 768.
-        \item \textbf{AraT5v2} fine-tuned to predict bertmsa embeddings with target size 768.
-    \end{enumerate}
-\end{enumerate}
+\begin{figure}[t!]
+    \centering
+    \captionsetup{justification=centering}
+    \includegraphics[width=0.88\textwidth]{experiments-chart.png}
+    \caption{Number of experiments conducted on the training set}
+    \label{fig:experiments}
+\end{figure}
+
+Figure \ref{fig:experiments} shows the total number of experiments conducted on the training set, with the first set of experiments conducted on the mT5-base model, and the second set on the AraT5v2 model.
 
 We will refer to the first set of experiments as \textbf{first experiment}, and the second set as \textbf{second experiment}.
 
@@ -661,7 +656,7 @@ Based on the archeticture seen in Figure \ref{fig:model-arch}, the only trainabl
 
 \newpage
 
-\subsection{Evaluation results}
+\subsection{Evaluating results}
 
 This subsection presents the final evaluation results of our experiments on the validation set. As the shared task withholds target values for the test set, its performance remains unevaluated. Once scores are submitted, official results will be announced alongside the winning solutions (those who outperform the baseline). Nonetheless, the validation set performance provides valuable insights into the model's potential.
 
